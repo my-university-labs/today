@@ -12,25 +12,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.adapter.WeatherAdapter;
+import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.entity.Weather;
+import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.utils.Tools;
+
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer_layout;
+    private List<Weather> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_page);
-
+        // toolbar
         Toolbar toobar = (Toolbar) findViewById(R.id.toolbar);
         toobar.setTitle("");
 
+        // which city now
         TextView place = (TextView)findViewById(R.id.titles);
         place.setText("哈尔滨");
         setSupportActionBar(toobar);
+
+        // slide menu
         drawer_layout = (DrawerLayout)findViewById(R.id.drawer_layout);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
@@ -61,15 +73,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // main weather -- today
 
-        ImageView imageView = (ImageView)findViewById(R.id.image);
-        Glide
-                .with(this)
-                .load(R.drawable.w0)
-                .placeholder(R.drawable.w0)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(imageView);
+        // future
+for (int i = 0; i < 20; ++i)
+        list.add(new Weather(Tools.getImageByReflect(this, "w"+i), "", "", "", ""));
+
+
+
+//        init_future();
+        ListView future = (ListView) findViewById(R.id.future_weather);
+        WeatherAdapter adapter = new WeatherAdapter(this, R.layout.future_weather, list);
+        future.setAdapter(adapter);
+
+
+
+//        ImageView imageView = (ImageView)findViewById(R.id.image);
+//        Glide
+//                .with(this)
+//                .load(R.drawable.w0)
+//                .placeholder(R.drawable.w0)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .into(imageView);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

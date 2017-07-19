@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    app:elevation="5dp">
 
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#fff"
-        />
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:elevation="5dp">
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/future_status"
+            android:src="@drawable/w6"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+       />
+        <TextView
+            android:id="@+id/future_day"
+            android:text="明天：星期三 多云转晴"
+            android:paddingLeft="20dp"
 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/future_status"
+            android:layout_toEndOf="@+id/future_status"
+            android:layout_below="@+id/view" />
+        <TextView
+            android:id="@+id/future_info"
+            android:paddingRight="10dp"
+            android:gravity="end|center_vertical"
+            android:text="25C/36C"
+            android:textSize="36sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/future_status"
+            android:layout_toEndOf="@+id/future_status"
+            android:layout_alignBottom="@+id/future_status"
+            android:layout_below="@+id/future_day" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
 
-
-    <TextView
-        android:id="@+id/tomorrow"
-        android:text="TOMORROW"
-        android:layout_width="match_parent"
-        android:layout_height="64dp" />
-    </android.support.v7.widget.CardView>
-
-</LinearLayout>
