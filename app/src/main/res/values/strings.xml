@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TODAYISBEAUTIFUL</string>
+    <string name="changecity">更改城市</string>
+    <string name="plan">出行计划</string>
+    <string name="alert">日历提醒</string>
+    <string name="shareweather">分享天气</string>
+    <string name="exit">退出</string>
+
 </resources>

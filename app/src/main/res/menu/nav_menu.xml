@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+    <item
+        android:title="@string/changecity"
+        android:id="@+id/nav_change_city"
+        />
+    <item
+        android:title="@string/plan"
+        android:id="@+id/nav_plan"
+        />
+    <item
+        android:title="@string/alert"
+        android:id="@+id/nav_alert"
+        />
+
+
+    </group>
+</menu>
