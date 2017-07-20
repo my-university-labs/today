@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
+        <item
+            android:state_checked="true"
+            android:id="@+id/nav_weather"
+            android:title="@string/nav_weather"/>
     <item
+        android:state_checked="true"
         android:title="@string/changecity"
         android:id="@+id/nav_change_city"
         />
     <item
+        android:state_checked="true"
         android:title="@string/plan"
         android:id="@+id/nav_plan"
         />
     <item
+        android:state_checked="true"
         android:title="@string/alert"
         android:id="@+id/nav_alert"
         />

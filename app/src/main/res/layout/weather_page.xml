@@ -1,27 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <!--主体-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:orientation="vertical">
-
-        <!--toolbar-->
-        <android.support.design.widget.AppBarLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            >
-            <include
-                layout="@layout/toolbar" />
-        </android.support.design.widget.AppBarLayout>
-
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/toolbar"
+    android:orientation="vertical"
+>
        <View
            android:layout_width="match_parent"
            android:layout_height="12dp"/>
@@ -45,17 +32,4 @@
         </ListView>
 
     </LinearLayout>
-
-
-
-    <!-- 左滑菜单-->
-   <android.support.design.widget.NavigationView
-       android:id="@+id/nav_view"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_gravity="start"
-       app:menu="@menu/nav_menu"
-
-       />
-
-</android.support.v4.widget.DrawerLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
