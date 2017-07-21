@@ -2,6 +2,8 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,11 +11,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
+import pers.dongchangzhang.todayisbeautiful.utils.GetWeatherInfo;
+
 public class MainActivity extends AppCompatActivity {
 //    fragment item
     private CityPage cityPage;
@@ -23,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction fTransaction;
 // slide menu
     private DrawerLayout drawer_layout;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         hideAllFragment(fTransaction);
         weatherPage = new WeatherPage();
         weatherPage.setContext(MainActivity.this);
-        fTransaction.add(R.id.ly_content,weatherPage);
+        fTransaction.add(R.id.ly_content, weatherPage);
         fTransaction.commit();
 
     }
@@ -107,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
                         if (weatherPage == null) {
                             weatherPage = new WeatherPage();
                             weatherPage.setContext(MainActivity.this);
-                            fTransaction.add(R.id.ly_content,weatherPage);
+                            fTransaction.add(R.id.ly_content, weatherPage);
+//                            fTransaction.add(R.id.future_day,weatherPage);
                         } else {
                             fTransaction.show(weatherPage);
                         }
