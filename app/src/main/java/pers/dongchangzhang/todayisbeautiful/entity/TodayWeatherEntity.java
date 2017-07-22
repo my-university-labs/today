@@ -4,61 +4,41 @@ package pers.dongchangzhang.todayisbeautiful.entity;
  * Created by cc on 17-7-21.
  */
 
-public class TodayWeatherEntity {
-    private String name;
-    private String country;
-    private String path;
-    private String text;
-    private String code;
-    private String temperature;
+public class TodayWeatherEntity extends WeatherEntity {
+    private TodayWeatherFromJsonEntity.Results.Location location;
+    private TodayWeatherFromJsonEntity.Results.Now now;
+    private FutureWeatherFromJsonEntity.Results.Daily today;
     private String last_update;
 
-    public String getName() {
-        return name;
+    public TodayWeatherEntity(TodayWeatherFromJsonEntity twjson, FutureWeatherFromJsonEntity fwjson) {
+        location = twjson.getResults().get(0).getLocation();
+        now = twjson.getResults().get(0).getNow();
+        today = fwjson.getResults().get(0).getDaily().get(0);
+        last_update = twjson.getResults().get(0).getLast_update();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public TodayWeatherFromJsonEntity.Results.Location getLocation() {
+        return location;
     }
 
-    public String getCountry() {
-        return country;
+    public void setLocation(TodayWeatherFromJsonEntity.Results.Location location) {
+        this.location = location;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public TodayWeatherFromJsonEntity.Results.Now getNow() {
+        return now;
     }
 
-    public String getPath() {
-        return path;
+    public void setNow(TodayWeatherFromJsonEntity.Results.Now now) {
+        this.now = now;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public FutureWeatherFromJsonEntity.Results.Daily getToday() {
+        return today;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getTemperature() {
-        return this.temperature + "℃";
-    }
-
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
+    public void setToday(FutureWeatherFromJsonEntity.Results.Daily today) {
+        this.today = today;
     }
 
     public String getLast_update() {

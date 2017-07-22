@@ -6,5 +6,6 @@
     <string name="shareweather">分享天气</string>
     <string name="exit">退出</string>
     <string name="nav_weather">当前天气</string>
+    <string name="share">分享</string>
 
 </resources>

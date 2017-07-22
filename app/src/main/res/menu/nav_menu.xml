@@ -3,24 +3,33 @@
     <group android:checkableBehavior="single">
         <item
             android:state_checked="true"
+            android:icon="@drawable/weather"
             android:id="@+id/nav_weather"
             android:title="@string/nav_weather"/>
     <item
         android:state_checked="true"
         android:title="@string/changecity"
         android:id="@+id/nav_change_city"
+        android:icon="@drawable/city"
         />
     <item
         android:state_checked="true"
         android:title="@string/plan"
+        android:icon="@drawable/plan"
         android:id="@+id/nav_plan"
         />
     <item
         android:state_checked="true"
         android:title="@string/alert"
         android:id="@+id/nav_alert"
+        android:icon="@drawable/alarm"
         />
-
+    <item
+        android:state_checked="true"
+        android:title="@string/share"
+        android:id="@+id/nav_share"
+        android:icon="@drawable/share"
+        />
 
     </group>
 </menu>

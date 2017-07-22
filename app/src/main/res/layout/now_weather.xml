@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="4dp"
-    app:elevation="5dp">
+    android:foreground = "?attr/selectableItemBackground"
+    >
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -13,8 +14,8 @@
   <ImageView
       android:src="@drawable/w99"
       android:layout_gravity="center"
-      android:layout_width="180dp"
-      android:layout_height="180dp"
+      android:layout_width="164dp"
+      android:layout_height="164dp"
       android:id="@+id/status"
       android:layout_alignParentTop="true"
       android:layout_alignParentLeft="true"
@@ -23,7 +24,8 @@
         android:id="@+id/update_time"
         android:text="更新时间：上午22:12"
         android:gravity="right"
-        android:layout_marginTop="20dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/status"
@@ -35,6 +37,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="26℃"
+      android:gravity="center"
       android:textSize="56sp"
       android:layout_above="@+id/info"
       android:layout_alignParentRight="true"
@@ -43,6 +46,7 @@
       android:layout_toEndOf="@+id/status" />
     <TextView
         android:id="@+id/info"
+        android:gravity="center"
         android:text="西北风  多云转晴  23C/34C"
         android:padding="1dp"
         android:layout_width="match_parent"
@@ -56,7 +60,7 @@
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="24dp"
         android:layout_toRightOf="@+id/status"
         android:layout_toEndOf="@+id/status"
         android:layout_alignBottom="@+id/status" />

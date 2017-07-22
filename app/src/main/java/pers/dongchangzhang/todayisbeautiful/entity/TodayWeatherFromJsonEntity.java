@@ -7,17 +7,17 @@ import java.util.List;
  */
 
 public class TodayWeatherFromJsonEntity {
-    private List<Result> results;
+    private List<Results> results;
 
-    public List<Result> getResults() {
+    public List<Results> getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(List<Results> results) {
         this.results = results;
     }
 
-    public class Result {
+    public class Results {
         private Now now;
         private Location location;
         private String last_update;

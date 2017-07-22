@@ -19,8 +19,9 @@ public class FutureWeatherFromJsonEntity {
 
     public class Results {
         private Location location;
-        List<Daily> daily;
+        private List<Daily> daily;
         private String last_update;
+
         public String getLast_update() {
             return last_update;
         }
@@ -37,12 +38,12 @@ public class FutureWeatherFromJsonEntity {
             this.location = location;
         }
 
-        public Now getNow() {
-            return now;
+        public List<Daily> getDaily() {
+            return daily;
         }
 
-        public void setNow(Now now) {
-            this.now = now;
+        public void setDaily(List<Daily> daily) {
+            this.daily = daily;
         }
 
 
@@ -105,75 +106,19 @@ public class FutureWeatherFromJsonEntity {
 
 
         public class Daily {
-            private String text;
-            private String code;
-            private String temperature;
-            private String feels_like;
-            private String pressure;
-            private String humidity;
-            private String visibility;
+            private String date;
+            private String text_day;
+            private String code_day;
+            private String text_night;;
+            private String code_night;
+            private String high;
+            private String low;
+            private String precip;
             private String wind_direction;
             private String wind_direction_degree;
             private String wind_speed;
             private String wind_scale;
-            private String clouds;
-            private String dew_points;
 
-            public String getText() {
-                return text;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public String getCode() {
-                return code;
-            }
-
-            public void setCode(String code) {
-                this.code = code;
-            }
-
-            public String getTemperature() {
-                return temperature;
-            }
-
-            public void setTemperature(String temperature) {
-                this.temperature = temperature;
-            }
-
-            public String getFeels_like() {
-                return feels_like;
-            }
-
-            public void setFeels_like(String feels_like) {
-                this.feels_like = feels_like;
-            }
-
-            public String getPressure() {
-                return pressure;
-            }
-
-            public void setPressure(String pressure) {
-                this.pressure = pressure;
-            }
-
-            public String getHumidity() {
-                return humidity;
-            }
-
-            public void setHumidity(String humidity) {
-                this.humidity = humidity;
-            }
-
-            public String getVisibility() {
-                return visibility;
-            }
-
-            public void setVisibility(String visibility) {
-                this.visibility = visibility;
-            }
 
             public String getWind_direction() {
                 return wind_direction;
@@ -207,20 +152,68 @@ public class FutureWeatherFromJsonEntity {
                 this.wind_scale = wind_scale;
             }
 
-            public String getClouds() {
-                return clouds;
+            public String getDate() {
+                return date;
             }
 
-            public void setClouds(String clouds) {
-                this.clouds = clouds;
+            public void setDate(String date) {
+                this.date = date;
             }
 
-            public String getDew_points() {
-                return dew_points;
+            public String getText_day() {
+                return text_day;
             }
 
-            public void setDew_points(String dew_points) {
-                this.dew_points = dew_points;
+            public void setText_day(String text_day) {
+                this.text_day = text_day;
+            }
+
+            public String getCode_day() {
+                return code_day;
+            }
+
+            public void setCode_day(String code_day) {
+                this.code_day = code_day;
+            }
+
+            public String getText_night() {
+                return text_night;
+            }
+
+            public void setText_night(String text_night) {
+                this.text_night = text_night;
+            }
+
+            public String getCode_night() {
+                return code_night;
+            }
+
+            public void setCode_night(String code_night) {
+                this.code_night = code_night;
+            }
+
+            public String getHigh() {
+                return high;
+            }
+
+            public void setHigh(String high) {
+                this.high = high;
+            }
+
+            public String getLow() {
+                return low;
+            }
+
+            public void setLow(String low) {
+                this.low = low;
+            }
+
+            public String getPrecip() {
+                return precip;
+            }
+
+            public void setPrecip(String precip) {
+                this.precip = precip;
             }
         }
 

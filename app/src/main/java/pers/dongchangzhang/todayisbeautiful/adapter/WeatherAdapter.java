@@ -5,7 +5,9 @@ package pers.dongchangzhang.todayisbeautiful.adapter;
  */
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +15,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.List;
 
+import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
 import pers.dongchangzhang.todayisbeautiful.entity.WeatherEntity;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
+import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
-/**
- * 照片栏目的适配器
- * Created by me on 16-12-21.
- */
+import static android.content.ContentValues.TAG;
+import static pers.dongchangzhang.todayisbeautiful.Config.which_image;
+
 public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<WeatherEntity> mWeatherEntityList;
@@ -55,35 +62,59 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof Item1ViewHolder) {
-//            ((Item1ViewHolder) holder).mTextView.setText(titles[position]);
-            WeatherEntity weatherEntity = mWeatherEntityList.get(position);
+
+            TodayWeatherEntity weatherEntity = (TodayWeatherEntity) mWeatherEntityList.get(position);
+            Log.d(TAG, "onBindViewHolder: " + weatherEntity.getNow().getCode());
             Glide
                     .with(context)
-                    .load(weatherEntity.getStatus())
+                    .load(Tools.getImageByReflect(context, "w" + weatherEntity.getNow().getCode()))
                     .centerCrop()
                     .placeholder(R.drawable.w99)
                     .error(R.drawable.w99)
                     .crossFade()
                     .thumbnail(0.1f).into(((Item1ViewHolder) holder).img);
-            ((Item1ViewHolder) holder).temp.setText(weatherEntity.getTemp());
-            ((Item1ViewHolder) holder).time.setText(weatherEntity.getLast_update());
-            ((Item1ViewHolder) holder).info.setText(weatherEntity.getDescribe());
+            ((Item1ViewHolder) holder).temp.setText(weatherEntity.getNow().getTemperature() + "℃");
+            ((Item1ViewHolder) holder).time.setText(formatTime(weatherEntity.getLast_update()));
+            ((Item1ViewHolder) holder).info.setText(formatTodayWeatherInfo(weatherEntity.getToday().getWind_direction(), weatherEntity.getNow().getText(), weatherEntity.getToday().getHigh(), weatherEntity.getToday().getLow()));
         } else if (holder instanceof Item2ViewHolder) {
-            WeatherEntity weatherEntity = mWeatherEntityList.get(position);
+            FutureWeatherEntity weatherEntity = (FutureWeatherEntity)mWeatherEntityList.get(position);
             Glide
                     .with(context)
-                    .load(weatherEntity.getStatus())
+                    .load(Tools.getImageByReflect(context,  "w" + weatherEntity.getDaily().getCode_day()))
                     .centerCrop()
                     .placeholder(R.drawable.w99)
                     .error(R.drawable.w99)
                     .crossFade()
-                    .thumbnail(0.1f).into(((Item2ViewHolder) holder).img);
-            ((Item2ViewHolder) holder).days.setText("明天");
-            ((Item2ViewHolder) holder).info.setText("23C/34C");
+                    .thumbnail(0.1f).into(((Item2ViewHolder) holder).day);
+            Glide
+                    .with(context)
+                    .load(Tools.getImageByReflect(context,  "w" + weatherEntity.getDaily().getCode_night()))
+                    .centerCrop()
+                    .placeholder(R.drawable.w99)
+                    .error(R.drawable.w99)
+                    .crossFade()
+                    .thumbnail(0.1f).into(((Item2ViewHolder) holder).night);
+            ((Item2ViewHolder) holder).time.setText(weatherEntity.getDaily().getDate());
+            ((Item2ViewHolder) holder).mark.setText(formatFutureMark(weatherEntity.getDaily().getText_day(),
+                    weatherEntity.getDaily().getText_night(), weatherEntity.getDaily().getHigh(), weatherEntity.getDaily().getLow()));
         } else {
-            //
+            MoreWeatherInfoEntity weatherEntity = (MoreWeatherInfoEntity) mWeatherEntityList.get(position);
+
+            SimpleTarget target = new SimpleTarget<Drawable>(){
+                @Override
+                public void onResourceReady(Drawable resource, GlideAnimation<? super Drawable> glideAnimation) {
+                    ((Item3ViewHolder) holder).more.setBackground(resource);
+                }
+            };
+
+            Glide
+                    .with(context)
+                    .load(which_image)
+                    .centerCrop()
+                    .thumbnail(0.1f).into(target);
+            ((Item3ViewHolder) holder).more.setText(formatTodayMoreInfo(weatherEntity));
         }
 
     }
@@ -94,7 +125,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     @Override
     public int getItemViewType(int position) {
-        if (position == mWeatherEntityList.size() - 1) return ITEM_TYPE.ITEM3.ordinal();
+        if (position == mWeatherEntityList.size() - 1 && position > 1) return ITEM_TYPE.ITEM3.ordinal();
         return position == 0 ? ITEM_TYPE.ITEM1.ordinal() : ITEM_TYPE.ITEM2.ordinal();
 
     }
@@ -114,21 +145,50 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
     public static class Item2ViewHolder extends RecyclerView.ViewHolder{
-        ImageView img;
-        TextView days;
-        TextView info;
+        ImageView day;
+        ImageView night;
+        TextView time;
+        TextView mark;
         public Item2ViewHolder(View itemView) {
             super(itemView);
-            img = (ImageView) itemView.findViewById(R.id.future_status);
-            days = (TextView)itemView.findViewById(R.id.future_day);
-            info = (TextView)itemView.findViewById(R.id.future_info);
+            day = (ImageView) itemView.findViewById(R.id.future_status_day);
+            night = (ImageView) itemView.findViewById(R.id.future_status_night);
 
+            time = (TextView)itemView.findViewById(R.id.future_time);
+            mark = (TextView)itemView.findViewById(R.id.future_mark);
         }
     }
     public static class Item3ViewHolder extends RecyclerView.ViewHolder{
-
+        TextView more;
         public Item3ViewHolder(View itemView) {
             super(itemView);
+            more = (TextView)itemView.findViewById(R.id.more);
         }
+    }
+
+    private String formatTodayWeatherInfo(String wind, String text, String high, String low) {
+        return wind + "风  天气" + text + "  " + high + "℃/" + low + "℃";
+    }
+
+    private String formatTime(String time) {
+        int end = time.lastIndexOf('+');
+        int start = time.indexOf('T');
+        time = time.substring(start + 1, end);
+        return time.substring(0, time.lastIndexOf(':'));
+    }
+    private String formatFutureMark(String day, String night, String high, String low) {
+        return day + " / " + night + "\n" + high
+                 + "℃ / " + low +"℃";
+    }
+    private String formatTodayMoreInfo(MoreWeatherInfoEntity weatherEntity) {
+        String feels = "体感温度：" + weatherEntity.getNow().getFeels_like() + "\n";
+        String humidity = "相对湿度：" + weatherEntity.getNow().getHumidity() + "\n";
+        String precip = "降水概率：" + weatherEntity.getToday().getPrecip() + "\n";
+        String wind_speed = "风速：" + weatherEntity.getToday().getWind_speed() + "\n";
+        String high = "最高气温：" + weatherEntity.getToday().getHigh() + "\n";
+        String low = "最低气温：" + weatherEntity.getToday().getLow() + "\n";
+        String uv = "紫外线强度：" + weatherEntity.getUv().getBrief() + "\n\n外出建议：" + weatherEntity.getUv().getDetails() + "\n";
+        String dressings = "穿衣指数：" + weatherEntity.getDressing().getBrief() + "\n\n穿衣建议：" + weatherEntity.getDressing().getDetails() + "\n";
+        return wind_speed + "\n" + high + "\n" + low + "\n" + precip + "\n" + feels + "\n" + humidity + "\n" +  uv + "\n" + dressings;
     }
 }
