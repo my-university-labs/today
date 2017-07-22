@@ -11,17 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5473a987-0d60-48d4-9b83-b871e7fe8df4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/utils/GetHttpInfo.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/utils/GetWeatherInfo.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/dress.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/sun.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/wind.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/dress.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/sun.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/wind.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/dress.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/sun.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/wind.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" />
@@ -30,25 +19,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/Config.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/Config.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/WeatherPage.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/WeatherPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/adapter/CityAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/adapter/CityAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/adapter/WeatherAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/adapter/WeatherAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/CityEntity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/CityEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/FutureWeatherFromJsonEntity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/FutureWeatherFromJsonEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/TodayWeatherEntity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/TodayWeatherEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/TodayWeatherFromJsonEntity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/TodayWeatherFromJsonEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/WeatherEntity.java" afterPath="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/WeatherEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/city_page.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/city_page.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/future_weather.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/future_weather.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/more_weather_info.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/more_weather_info.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/now_weather.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/now_weather.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/toolbar.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/toolbar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/nav_menu.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/nav_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="TODAYISBEAUTIFUL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -123,7 +95,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="city_page.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="city_page.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/city_page.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
@@ -139,18 +111,18 @@
       <file leaf-file-name="CityPage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="47" column="66" selection-start-line="47" selection-start-column="66" selection-end-line="47" selection-end-column="66" />
+            <state relative-caret-position="287">
+              <caret line="49" column="51" selection-start-line="49" selection-start-column="51" selection-end-line="49" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1084#1675#0" expanded="true" />
-                <element signature="e#1674#1675#0" expanded="true" />
-                <element signature="e#2357#2648#0" expanded="true" />
-                <element signature="e#2647#2648#0" expanded="true" />
-                <element signature="e#2725#2726#0" expanded="true" />
-                <element signature="e#2755#2756#0" expanded="true" />
-                <element signature="e#2802#2803#0" expanded="true" />
-                <element signature="e#2840#2841#0" expanded="true" />
+                <element signature="e#1084#1740#0" expanded="true" />
+                <element signature="e#1739#1740#0" expanded="true" />
+                <element signature="e#2422#2713#0" expanded="true" />
+                <element signature="e#2712#2713#0" expanded="true" />
+                <element signature="e#2790#2791#0" expanded="true" />
+                <element signature="e#2820#2821#0" expanded="true" />
+                <element signature="e#2867#2868#0" expanded="true" />
+                <element signature="e#2905#2906#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -166,14 +138,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+            <state relative-caret-position="257">
+              <caret line="100" column="35" selection-start-line="100" selection-start-column="35" selection-end-line="100" selection-end-column="35" />
               <folding>
-                <element signature="e#4098#6260#0" expanded="true" />
-                <element signature="e#6259#6260#0" expanded="true" />
+                <element signature="e#4277#6439#0" expanded="true" />
+                <element signature="e#6438#6439#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2142,11 +2114,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/entity/CityEntity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/city_page.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/city_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/utils/GetHttpInfo.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/WeatherPage.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/Config.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -3335,13 +3307,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/city_page.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        <state relative-caret-position="90">
+          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="49" column="51" selection-start-line="49" selection-start-column="51" selection-end-line="49" selection-end-column="51" />
           <folding>
-            <element signature="e#4098#6260#0" expanded="true" />
-            <element signature="e#6259#6260#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1084#1740#0" expanded="true" />
+            <element signature="e#1739#1740#0" expanded="true" />
+            <element signature="e#2422#2713#0" expanded="true" />
+            <element signature="e#2712#2713#0" expanded="true" />
+            <element signature="e#2790#2791#0" expanded="true" />
+            <element signature="e#2820#2821#0" expanded="true" />
+            <element signature="e#2867#2868#0" expanded="true" />
+            <element signature="e#2905#2906#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3354,33 +3344,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/CityPage.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/pers/dongchangzhang/todayisbeautiful/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="257">
-          <caret line="47" column="66" selection-start-line="47" selection-start-column="66" selection-end-line="47" selection-end-column="66" />
+          <caret line="100" column="35" selection-start-line="100" selection-start-column="35" selection-end-line="100" selection-end-column="35" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1084#1675#0" expanded="true" />
-            <element signature="e#1674#1675#0" expanded="true" />
-            <element signature="e#2357#2648#0" expanded="true" />
-            <element signature="e#2647#2648#0" expanded="true" />
-            <element signature="e#2725#2726#0" expanded="true" />
-            <element signature="e#2755#2756#0" expanded="true" />
-            <element signature="e#2802#2803#0" expanded="true" />
-            <element signature="e#2840#2841#0" expanded="true" />
+            <element signature="e#4277#6439#0" expanded="true" />
+            <element signature="e#6438#6439#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/city_page.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
   </component>

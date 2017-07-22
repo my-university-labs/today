@@ -95,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
         if(weatherPage != null)fragmentTransaction.hide(weatherPage);
         if(cityPage != null)fragmentTransaction.hide(cityPage);
 //        if(planPage != null)fragmentTransaction.hide(planPage);
+
+        for (CityPage cp : backup) {
+            try {
+                fragmentTransaction.hide(cp);
+            }catch (Exception e) {
+                ;
+            }
+        }
     }
     private void init_fragment() {
         fManager = getFragmentManager();

@@ -45,7 +45,9 @@ public class CityPage extends Fragment  {
                     break;
                 default:
                     list.clear();
+
                     List<CityEntity> tmp = (List<CityEntity>) msg.obj;
+                    Log.d(TAG, "handleMessage: " + tmp.size());
                     for (int i = 0; i < tmp.size(); ++i) {
                         list.add(tmp.get(i));
                     }
