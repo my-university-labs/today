@@ -19,15 +19,15 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import pers.dongchangzhang.todayisbeautiful.entity.CityEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherFromJsonEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.LifeInfoEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.LifeInfoFromJsonEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherFromJsonEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.WeatherEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.CityBean;
+import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherBean;
+import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherFromJsonBean;
+import pers.dongchangzhang.todayisbeautiful.entity.LifeInfoBean;
+import pers.dongchangzhang.todayisbeautiful.entity.LifeInfoFromJsonBean;
+import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoBean;
+import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherBean;
+import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherFromJsonBean;
+import pers.dongchangzhang.todayisbeautiful.entity.WeatherBean;
 
 /**
  * Created by cc on 17-7-20.
@@ -49,7 +49,7 @@ public class GetHttpInfo {
         new Thread() {
             @Override
             public void run() {
-                List<WeatherEntity> infos = new ArrayList<>();
+                List<WeatherBean> infos = new ArrayList<>();
                 String jsonData = null;
                 try {
                     jsonData = get(String.format(WEATHER_NOW_INTERFACE, PRIVATE_KEY, city));
@@ -58,7 +58,7 @@ public class GetHttpInfo {
                 }
                 Log.d(TAG, "today_now_info: " + jsonData);
                 Gson gson = new Gson();
-                TodayWeatherFromJsonEntity twjson = gson.fromJson(jsonData, TodayWeatherFromJsonEntity.class);
+                TodayWeatherFromJsonBean twjson = gson.fromJson(jsonData, TodayWeatherFromJsonBean.class);
 
 
                 try {
@@ -69,7 +69,7 @@ public class GetHttpInfo {
 
                 Log.d(TAG, "many_day_info: " + jsonData);
                 gson = new Gson();
-                FutureWeatherFromJsonEntity fwjson = gson.fromJson(jsonData, FutureWeatherFromJsonEntity.class);
+                FutureWeatherFromJsonBean fwjson = gson.fromJson(jsonData, FutureWeatherFromJsonBean.class);
 
 
                 try {
@@ -79,7 +79,7 @@ public class GetHttpInfo {
                 }
                 Log.d(TAG, "life_info: " + jsonData);
                 gson = new Gson();
-                LifeInfoFromJsonEntity lijson = gson.fromJson(jsonData, LifeInfoFromJsonEntity.class);
+                LifeInfoFromJsonBean lijson = gson.fromJson(jsonData, LifeInfoFromJsonBean.class);
                 Log.d(TAG, "run: " + lijson);
 
                 try {
@@ -89,15 +89,15 @@ public class GetHttpInfo {
                 }
 
                 // today
-                infos.add(new TodayWeatherEntity(twjson, fwjson));
+                infos.add(new TodayWeatherBean(twjson, fwjson));
                 // future;
-                FutureWeatherFromJsonEntity.Results.Location location = fwjson.getResults().get(0).getLocation();
+                FutureWeatherFromJsonBean.Results.Location location = fwjson.getResults().get(0).getLocation();
                 String last_update = fwjson.getResults().get(0).getLast_update();
                 for (int i = 1; i < fwjson.getResults().get(0).getDaily().size(); ++i) {
-                    infos.add(new FutureWeatherEntity(location, fwjson.getResults().get(0).getDaily().get(i), last_update));
+                    infos.add(new FutureWeatherBean(location, fwjson.getResults().get(0).getDaily().get(i), last_update));
                 }
                 // life
-                infos.add(new MoreWeatherInfoEntity(new TodayWeatherEntity(twjson, fwjson), new LifeInfoEntity(lijson)));
+                infos.add(new MoreWeatherInfoBean(new TodayWeatherBean(twjson, fwjson), new LifeInfoBean(lijson)));
 
                 Message msg = new Message();
                 msg.what = code;
@@ -113,7 +113,7 @@ public class GetHttpInfo {
             @Override
             public void run() {
                 String jsonData = null;
-                List<CityEntity> list = new ArrayList<CityEntity>();
+                List<CityBean> list = new ArrayList<CityBean>();
                 try {
                     jsonData = get(url + "/" + code);
                 } catch (IOException e) {
@@ -124,7 +124,7 @@ public class GetHttpInfo {
                     JSONArray allPlaces = new JSONArray(jsonData);
                     for (int i = 0; i < allPlaces.length(); ++i) {
                         JSONObject jsonObject = allPlaces.getJSONObject(i);
-                        list.add(new CityEntity(jsonObject.getString("id"), jsonObject.getString("name")));
+                        list.add(new CityBean(jsonObject.getString("id"), jsonObject.getString("name")));
                         Log.d(TAG, "id is " + jsonObject.getString("id") + "name is " + jsonObject.getString("name"));
                     }
                 } catch (JSONException e) {

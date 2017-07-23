@@ -20,10 +20,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.List;
 
-import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.WeatherEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherBean;
+import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoBean;
+import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherBean;
+import pers.dongchangzhang.todayisbeautiful.entity.WeatherBean;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
@@ -32,7 +32,7 @@ import static pers.dongchangzhang.todayisbeautiful.Config.which_image;
 
 public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    List<WeatherEntity> mWeatherEntityList;
+    List<WeatherBean> mWeatherEntityList;
     private Context context;
     private LayoutInflater mLayoutInflater;
 
@@ -43,7 +43,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public WeatherAdapter(Context context, List<WeatherEntity> objects) {
+    public WeatherAdapter(Context context, List<WeatherBean> objects) {
         this.mWeatherEntityList = objects;
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -65,7 +65,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof Item1ViewHolder) {
 
-            TodayWeatherEntity weatherEntity = (TodayWeatherEntity) mWeatherEntityList.get(position);
+            TodayWeatherBean weatherEntity = (TodayWeatherBean) mWeatherEntityList.get(position);
             Log.d(TAG, "onBindViewHolder: " + weatherEntity.getNow().getCode());
             Glide
                     .with(context)
@@ -79,7 +79,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Item1ViewHolder) holder).time.setText(formatTime(weatherEntity.getLast_update()));
             ((Item1ViewHolder) holder).info.setText(formatTodayWeatherInfo(weatherEntity.getToday().getWind_direction(), weatherEntity.getNow().getText(), weatherEntity.getToday().getHigh(), weatherEntity.getToday().getLow()));
         } else if (holder instanceof Item2ViewHolder) {
-            FutureWeatherEntity weatherEntity = (FutureWeatherEntity)mWeatherEntityList.get(position);
+            FutureWeatherBean weatherEntity = (FutureWeatherBean)mWeatherEntityList.get(position);
             Glide
                     .with(context)
                     .load(Tools.getImageByReflect(context,  "w" + weatherEntity.getDaily().getCode_day()))
@@ -100,7 +100,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((Item2ViewHolder) holder).mark.setText(formatFutureMark(weatherEntity.getDaily().getText_day(),
                     weatherEntity.getDaily().getText_night(), weatherEntity.getDaily().getHigh(), weatherEntity.getDaily().getLow()));
         } else {
-            MoreWeatherInfoEntity weatherEntity = (MoreWeatherInfoEntity) mWeatherEntityList.get(position);
+            MoreWeatherInfoBean weatherEntity = (MoreWeatherInfoBean) mWeatherEntityList.get(position);
 
             SimpleTarget target = new SimpleTarget<Drawable>(){
                 @Override
@@ -181,7 +181,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return day + " / " + night + "\n" + high
                  + "℃ / " + low +"℃";
     }
-    private String formatTodayMoreInfo(MoreWeatherInfoEntity weatherEntity) {
+    private String formatTodayMoreInfo(MoreWeatherInfoBean weatherEntity) {
         String feels = "体感温度：" + weatherEntity.getNow().getFeels_like() + "\n";
         String humidity = "相对湿度：" + weatherEntity.getNow().getHumidity() + "\n";
         String precip = "降水概率：" + weatherEntity.getToday().getPrecip() + "\n";

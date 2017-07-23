@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
     android:foreground = "?attr/selectableItemBackground"
-    android:layout_margin="16sp"
+    android:layout_margin="6sp"
 
     app:elevation="1dp">
     <TextView

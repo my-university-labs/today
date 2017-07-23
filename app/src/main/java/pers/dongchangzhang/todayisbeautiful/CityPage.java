@@ -1,26 +1,25 @@
 package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.adapter.CityAdapter;
-import pers.dongchangzhang.todayisbeautiful.entity.CityEntity;
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.CityBean;
+import pers.dongchangzhang.todayisbeautiful.inter.MyItemOnClickListener;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.GetHttpInfo;
+import pers.dongchangzhang.todayisbeautiful.utils.MyDecoration;
 
 import static android.content.ContentValues.TAG;
 
@@ -30,10 +29,8 @@ import static android.content.ContentValues.TAG;
  */
 
 public class CityPage extends Fragment  {
-    private ListView listView;
     private CityAdapter adapter;
-    private Context context;
-    List<CityEntity> list = new ArrayList<>();
+    List<CityBean> list = new ArrayList<>();
 
     private Handler handler = new Handler() {
 
@@ -46,7 +43,7 @@ public class CityPage extends Fragment  {
                 default:
                     list.clear();
 
-                    List<CityEntity> tmp = (List<CityEntity>) msg.obj;
+                    List<CityBean> tmp = (List<CityBean>) msg.obj;
                     Log.d(TAG, "handleMessage: " + tmp.size());
                     for (int i = 0; i < tmp.size(); ++i) {
                         list.add(tmp.get(i));
@@ -59,28 +56,31 @@ public class CityPage extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.city_page,container,false);
-        listView = (ListView) view.findViewById(R.id.city_list);
-        adapter = new CityAdapter(getActivity(), R.layout.city_item, list);
-        listView.setAdapter(adapter);
+
+
+
+        RecyclerView citys = (RecyclerView) view.findViewById(R.id.city_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager((MainActivity)getActivity());
+        citys.setLayoutManager(layoutManager);
+        adapter = new CityAdapter((MainActivity)getActivity(), list);
+
+        citys.addItemDecoration(new MyDecoration((MainActivity)getActivity(), MyDecoration.VERTICAL_LIST));
+
         final String code = getArguments().getString("code");
         final String url = getArguments().getString("url");
         final String city = getArguments().getString("city");
         GetHttpInfo.getCityInfo(handler, url, code, city);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        adapter.setItemOnClickListener(new MyItemOnClickListener() {
+            @Override
+            public void onItemOnClick(View view, int position) {
                 ((MainActivity)getActivity()).changeToCity(url + "/" + code, list.get(position).getId(), list.get(position).getName());
+
             }
         });
+        citys.setAdapter(adapter);
+
         return view;
     }
 
-    @Override
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 }

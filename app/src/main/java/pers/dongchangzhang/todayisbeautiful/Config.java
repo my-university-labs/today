@@ -25,5 +25,9 @@ public class Config {
 
     public static String which_image;
     public static String which_city = "哈尔滨";
+    public static int DB_VERSION = 1;
+    public static String DB_NAME = "plans.db";
+    public static String CHECKED_FALSE = "n";
+    public static String CHECKED_TRUE = "y";
 
 }

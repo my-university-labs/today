@@ -18,12 +18,7 @@
         android:icon="@drawable/plan"
         android:id="@+id/nav_plan"
         />
-    <item
-        android:state_checked="true"
-        android:title="@string/alert"
-        android:id="@+id/nav_alert"
-        android:icon="@drawable/alarm"
-        />
+
     <item
         android:state_checked="true"
         android:title="@string/share"

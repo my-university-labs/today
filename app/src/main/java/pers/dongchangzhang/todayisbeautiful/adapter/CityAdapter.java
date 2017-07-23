@@ -1,56 +1,78 @@
 package pers.dongchangzhang.todayisbeautiful.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import pers.dongchangzhang.todayisbeautiful.entity.CityEntity;
+import pers.dongchangzhang.todayisbeautiful.entity.CityBean;
+import pers.dongchangzhang.todayisbeautiful.inter.MyItemOnClickListener;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
 /**
  * Created by cc on 17-7-19.
  */
 
-public class CityAdapter extends ArrayAdapter<CityEntity> {
-    private int resourceId;
+public class CityAdapter extends  RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
-    private List<CityEntity> mCityList;
+    private List<CityBean> mCityEntityList;
     private Context context;
+    private LayoutInflater mLayoutInflater;
+    private  MyItemOnClickListener mMyItemOnClickListener;
 
-    public CityAdapter(Context context, int textViewResourceId, List<CityEntity> objects) {
-        super(context, textViewResourceId, objects);
+
+    public CityAdapter(Context context, List<CityBean> objects) {
+        this.mCityEntityList = objects;
         this.context = context;
-        this.mCityList = objects;
-        this.resourceId = textViewResourceId;
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        final CityEntity city = getItem(position);
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = LayoutInflater.from(getContext()).inflate(resourceId, null);
-            holder.city = (TextView) convertView.findViewById(R.id.which_city);
-            convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)convertView.getTag();
-        }
-        holder.city.setText(city.getName());
-        return convertView;
-    }
-    private static class ViewHolder
-    {
-        public TextView city;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
+        return  new ViewHolder(mLayoutInflater.inflate(R.layout.city_item, parent, false), mMyItemOnClickListener);
     }
 
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+            CityBean cityEntity = (CityBean) mCityEntityList.get(position);
+            holder.city.setText(cityEntity.getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mCityEntityList.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView city;
+        View cityView;
+        MyItemOnClickListener mListener;
+
+        public ViewHolder(View itemView, MyItemOnClickListener myItemOnClickListener) {
+            super(itemView);
+            cityView = itemView;
+            city = (TextView) itemView.findViewById(R.id.which_city);
+            this.mListener = myItemOnClickListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(mListener!=null){
+                mListener.onItemOnClick(view,getPosition());
+            }
+        }
+    }
+    public void setItemOnClickListener(MyItemOnClickListener listener){
+        mMyItemOnClickListener=listener;
+    }
 
 }

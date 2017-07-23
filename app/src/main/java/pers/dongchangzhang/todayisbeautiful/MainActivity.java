@@ -17,9 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
-import pers.dongchangzhang.todayisbeautiful.utils.GetHttpInfo;
 
 import static pers.dongchangzhang.todayisbeautiful.Config.CHINA_PROVINCE;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
@@ -30,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private PlanPage planPage;
     private WeatherPage weatherPage;
     private FragmentManager fManager;
+    private NewPlanPage newPlanPage;
     private FragmentTransaction fTransaction;
     private List<CityPage> backup = new ArrayList<>();
 // slide menu
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         if(weatherPage != null)fragmentTransaction.hide(weatherPage);
         if(cityPage != null)fragmentTransaction.hide(cityPage);
         if(planPage != null)fragmentTransaction.hide(planPage);
+        if(newPlanPage != null)fragmentTransaction.hide(newPlanPage);
 
         for (CityPage cp : backup) {
             try {
@@ -122,10 +122,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 fTransaction = fManager.beginTransaction();
-                hideAllFragment(fTransaction);
+
                 TextView place = (TextView)findViewById(R.id.titles);
                 switch(item.getItemId()) {
                     case R.id.nav_weather:
+                        hideAllFragment(fTransaction);
                         place.setText(which_city);
                         removeTmpCityPage(fTransaction);
                         if (weatherPage == null) {
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         drawer_layout.closeDrawers();
                         break;
                     case R.id.nav_change_city:
-
+                        hideAllFragment(fTransaction);
                         place.setText("选择城市");
                         removeTmpCityPage(fTransaction);
 
@@ -154,16 +155,15 @@ public class MainActivity extends AppCompatActivity {
                         drawer_layout.closeDrawers();
                         break;
                     case R.id.nav_plan:
+                        hideAllFragment(fTransaction);
+                        place.setText("出行计划");
                         removeTmpCityPage(fTransaction);
                         if (planPage == null) {
                             planPage = new PlanPage();
                             fTransaction.add(R.id.ly_content, planPage);
                         } else {
-                            fTransaction.show(weatherPage);
+                            fTransaction.show(planPage);
                         }
-                        drawer_layout.closeDrawers();
-                        break;
-                    case R.id.nav_alert:
                         drawer_layout.closeDrawers();
                         break;
                 }
@@ -204,6 +204,37 @@ public class MainActivity extends AppCompatActivity {
         fTransaction.commit();
 
     }
+    public void newAPlan() {
+        TextView place = (TextView)findViewById(R.id.titles);
+        place.setText("新的计划");
+        fTransaction = fManager.beginTransaction();
+        hideAllFragment(fTransaction);
+        if (newPlanPage == null) {
+            newPlanPage = new NewPlanPage();
+            fTransaction.add(R.id.ly_content, newPlanPage);
+        } else {
+            fTransaction.show(newPlanPage);
+        }
+        fTransaction.commit();
+    }
+    public void cancelNewPlan() {
+        TextView place = (TextView)findViewById(R.id.titles);
+        place.setText("出行计划");
+        fTransaction = fManager.beginTransaction();
+        hideAllFragment(fTransaction);
+        if (planPage == null) {
+            planPage = new PlanPage();
+            fTransaction.add(R.id.ly_content, planPage);
+        } else {
+            fTransaction.show(planPage);
+        }
+        fTransaction.commit();
+    }
+    public void commitNewPlan() {
+        planPage.reRefresh();
+        cancelNewPlan();
+    }
+
     private void removeTmpCityPage(FragmentTransaction  fTransaction ) {
         for (CityPage cp : backup) {
             try {
