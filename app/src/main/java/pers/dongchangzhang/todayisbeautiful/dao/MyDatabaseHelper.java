@@ -12,7 +12,15 @@ import android.widget.Toast;
 
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
-    private static final String PLANINFORMATION = "create table PlanInformations ("
+    private final String PLANINFORMATION = "create table PlanInformations ("
+            + "id integer primary key autoincrement, "
+            + "checked int, "
+            + "time text, "
+            + "title text, "
+            + "content text)";
+    private final String SETTINGS =  "create table Settings ("
+            + "city text)";
+    private final String EVENT =  "create table Events ("
             + "id integer primary key autoincrement, "
             + "checked int, "
             + "time text, "
@@ -28,6 +36,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(PLANINFORMATION);
+            db.execSQL(SETTINGS);
+            db.execSQL(EVENT);
+
             Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<item
-    android:title="Backup"
-    android:id="@+id/backup"
-    app:showAsAction="never"
-    />
     <item
-        android:title="Settings"
-        android:id="@+id/settings"
+        android:title="设置当前位置为默认地点"
+        android:id="@+id/confirm"
         app:showAsAction="never"
         />
     <item

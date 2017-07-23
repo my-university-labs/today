@@ -5,10 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="1dp"
     android:foreground = "?attr/selectableItemBackground"
     android:layout_margin="6sp"
-
     app:elevation="1dp">
     <TextView
         android:id="@+id/which_city"

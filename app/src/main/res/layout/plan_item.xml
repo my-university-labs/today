@@ -11,36 +11,30 @@
     app:elevation="1dp">
 
     <RelativeLayout
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/checked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="" />
+
         <TextView
             android:id="@+id/plan_name"
             android:text="This is a plan!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/checked" />
+            android:layout_margin="6sp"
+             />
         <TextView
             android:id="@+id/plan_time"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="9999/99/99"
-            android:layout_alignBottom="@+id/checked"
-            android:layout_toEndOf="@+id/checked" />
-        <TextView
-            android:id="@+id/plan_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="30dp"
-            android:layout_below="@+id/plan_time"
-            android:text="Balabala小魔仙"
-            android:layout_toEndOf="@+id/radioButton" />
+            android:layout_marginLeft="6sp"
+            android:layout_marginRight="6sp"
+            android:layout_below="@+id/plan_name"
+            android:layout_alignEnd="@+id/plan_name" />
+
 
 
     </RelativeLayout>

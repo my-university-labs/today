@@ -30,4 +30,9 @@ public class Config {
     public static String CHECKED_FALSE = "n";
     public static String CHECKED_TRUE = "y";
 
+    private static String CALANDER_URL = "content://com.android.calendar_page/calendars";
+    private static String CALANDER_EVENT_URL = "content://com.android.calendar_page/events";
+    private static String CALANDER_REMIDER_URL = "content://com.android.calendar_page/reminders";
+
+
 }

@@ -45,9 +45,6 @@ public class PlanAdapter extends  RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         PlanBean plan = (PlanBean) mPlanList.get(position);
         holder.plan_title.setText(plan.getPlan_title());
         holder.plan_time.setText(plan.getPlan_time());
-        holder.plan_content.setText(plan.getPlan_content());
-        boolean checked = (plan.getChecked() == CHECKED_FALSE) ? false : true;
-        holder.radioButton.setChecked(false);
     }
 
     @Override
@@ -59,7 +56,6 @@ public class PlanAdapter extends  RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView plan_title;
         TextView plan_time;
-        TextView plan_content;
         RadioButton radioButton;
         View cityView;
         MyItemOnClickListener mListener;
@@ -69,8 +65,6 @@ public class PlanAdapter extends  RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             cityView = itemView;
             plan_title = (TextView) itemView.findViewById(R.id.plan_name);
             plan_time = (TextView)itemView.findViewById(R.id.plan_time);
-            plan_content = (TextView)itemView.findViewById(R.id.plan_content);
-            radioButton = (RadioButton)itemView.findViewById(R.id.checked);
             this.mListener = myItemOnClickListener;
             itemView.setOnClickListener(this);
         }

@@ -100,6 +100,7 @@ public class NewPlanPage extends Fragment {
                 value.put("content", plan_content.getText().toString());
                 value.put("checked", CHECKED_FALSE);
                 operator.insert("PlanInformations", value);
+                operator.close();
 
                 List<Map> maps= operator.search("PlanInformations");
                 for (Map m : maps) {

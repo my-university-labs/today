@@ -2,6 +2,9 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,9 +20,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
+import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_FALSE;
 import static pers.dongchangzhang.todayisbeautiful.Config.CHINA_PROVINCE;
+import static pers.dongchangzhang.todayisbeautiful.Config.DB_NAME;
+import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private WeatherPage weatherPage;
     private FragmentManager fManager;
     private NewPlanPage newPlanPage;
+    private CalendarPage calendarPage;
     private FragmentTransaction fTransaction;
     private List<CityPage> backup = new ArrayList<>();
 // slide menu
@@ -40,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("default_city", Context.MODE_PRIVATE);
+        which_city = sharedPreferences.getString("cityName", which_city);
         // toolbar
         Toolbar toobar = (Toolbar) findViewById(R.id.toolbar);
         toobar.setTitle("");
@@ -78,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 drawer_layout.openDrawer(GravityCompat.START);
                 break;
-            case R.id.backup:
-                break;
-            case R.id.settings:
+            case R.id.confirm:
+                saveDataIntoPreferences("default_city", which_city);
+                Toast.makeText(this, "成功设置" + which_city + "为默认地点", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.exit:
                 this.finish();
@@ -94,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         if(cityPage != null)fragmentTransaction.hide(cityPage);
         if(planPage != null)fragmentTransaction.hide(planPage);
         if(newPlanPage != null)fragmentTransaction.hide(newPlanPage);
+        if(calendarPage != null)fragmentTransaction.hide(calendarPage);
 
         for (CityPage cp : backup) {
             try {
@@ -163,6 +174,18 @@ public class MainActivity extends AppCompatActivity {
                             fTransaction.add(R.id.ly_content, planPage);
                         } else {
                             fTransaction.show(planPage);
+                        }
+                        drawer_layout.closeDrawers();
+                        break;
+                    case R.id.nav_alert:
+                        hideAllFragment(fTransaction);
+                        place.setText("日历提醒");
+                        removeTmpCityPage(fTransaction);
+                        if (calendarPage == null) {
+                            calendarPage = new CalendarPage();
+                            fTransaction.add(R.id.ly_content, calendarPage);
+                        } else {
+                            fTransaction.show(calendarPage);
                         }
                         drawer_layout.closeDrawers();
                         break;
@@ -244,6 +267,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         backup.clear();
+    }
+    private boolean saveDataIntoPreferences(String fileName, String cityName) {
+        boolean saveSuccessfully = false;
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("cityName", cityName);
+        saveSuccessfully = edit.commit();
+        return saveSuccessfully;
     }
 
 }
