@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
         weatherPage = new WeatherPage();
-        weatherPage.setContext(MainActivity.this);
         fTransaction.add(R.id.ly_content, weatherPage);
         fTransaction.commit();
 
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideAllFragment(FragmentTransaction fragmentTransaction){
         if(weatherPage != null)fragmentTransaction.hide(weatherPage);
         if(cityPage != null)fragmentTransaction.hide(cityPage);
-//        if(planPage != null)fragmentTransaction.hide(planPage);
+        if(planPage != null)fragmentTransaction.hide(planPage);
 
         for (CityPage cp : backup) {
             try {
@@ -127,11 +126,10 @@ public class MainActivity extends AppCompatActivity {
                 TextView place = (TextView)findViewById(R.id.titles);
                 switch(item.getItemId()) {
                     case R.id.nav_weather:
-                        place.setText("哈尔滨");
+                        place.setText(which_city);
                         removeTmpCityPage(fTransaction);
                         if (weatherPage == null) {
                             weatherPage = new WeatherPage();
-                            weatherPage.setContext(MainActivity.this);
                             fTransaction.add(R.id.ly_content, weatherPage);
                         } else {
                             fTransaction.show(weatherPage);
@@ -156,7 +154,13 @@ public class MainActivity extends AppCompatActivity {
                         drawer_layout.closeDrawers();
                         break;
                     case R.id.nav_plan:
-                        place.setText("出行计划");
+                        removeTmpCityPage(fTransaction);
+                        if (planPage == null) {
+                            planPage = new PlanPage();
+                            fTransaction.add(R.id.ly_content, planPage);
+                        } else {
+                            fTransaction.show(weatherPage);
+                        }
                         drawer_layout.closeDrawers();
                         break;
                     case R.id.nav_alert:

@@ -24,6 +24,7 @@ import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherEntity;
 import pers.dongchangzhang.todayisbeautiful.entity.WeatherEntity;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.GetHttpInfo;
+import pers.dongchangzhang.todayisbeautiful.utils.MyDecoration;
 
 import static pers.dongchangzhang.todayisbeautiful.Config.OPERATION_REFRESH;
 import static pers.dongchangzhang.todayisbeautiful.Config.START_REFRESH;
@@ -35,9 +36,6 @@ import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
 public class WeatherPage extends Fragment {
 
-    private int city_code;
-    private String city;
-    private Context context;
     private WeatherAdapter adapter;
     private List<WeatherEntity> list = new ArrayList<>();
     private SwipeRefreshLayout swipFresh;
@@ -66,7 +64,7 @@ public class WeatherPage extends Fragment {
                         list.add((FutureWeatherEntity)tmp.get(i));
                     list.add((MoreWeatherInfoEntity) tmp.get(tmp.size() - 1));
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(context, "更新完成", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((MainActivity)getActivity(), "更新完成", Toast.LENGTH_SHORT).show();
                     swipFresh.setRefreshing(false);
                 default:
                     break;
@@ -76,18 +74,6 @@ public class WeatherPage extends Fragment {
 
     public WeatherPage() {}
 
-    public int getCity_code() {
-        return city_code;
-    }
-
-    public void setCity_code(int city_code) {
-        this.city_code = city_code;
-    }
-
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,10 +83,12 @@ public class WeatherPage extends Fragment {
         GetHttpInfo.getWeatherInfo(handler, which_city, START_REFRESH);
 
         RecyclerView future = (RecyclerView) view.findViewById(R.id.weather);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager layoutManager = new LinearLayoutManager((MainActivity)getActivity());
         future.setLayoutManager(layoutManager);
-        adapter = new WeatherAdapter(context, list);
+        adapter = new WeatherAdapter((MainActivity)getActivity(), list);
         future.setAdapter(adapter);
+
+        future.addItemDecoration(new MyDecoration((MainActivity)getActivity(), MyDecoration.VERTICAL_LIST));
 
         swipFresh = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
         swipFresh.setColorSchemeResources(R.color.colorPrimary);
@@ -117,12 +105,4 @@ public class WeatherPage extends Fragment {
         GetHttpInfo.getWeatherInfo(handler, city, OPERATION_REFRESH);
     }
 
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 }

@@ -171,6 +171,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private String formatTime(String time) {
+        Log.d(TAG, "formatTime: " + time);
         int end = time.lastIndexOf('+');
         int start = time.indexOf('T');
         time = time.substring(start + 1, end);
