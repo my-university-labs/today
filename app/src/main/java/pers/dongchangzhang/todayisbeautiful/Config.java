@@ -4,6 +4,8 @@ package pers.dongchangzhang.todayisbeautiful;
  * Created by cc on 17-7-19.
  */
 
+import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
+
 public class Config {
     public static final String IMAGE_API = "http://guolin.tech/api/bing_pic";
     public static final String CHINA_PROVINCE = "http://guolin.tech/api";
@@ -14,17 +16,15 @@ public class Config {
     public static final String USER_ID = "U290A5A354";
     public static final String PRIVATE_KEY = "gl3b1rm9qlekbucw";
 
-    public final static int CONNECT_TIMEOUT = 60;
-    public final static int READ_TIMEOUT = 100;
-    public final static int WRITE_TIMEOUT = 60;
-
-
-    public final static int START_REFRESH = 1;
-    public final static int OPERATION_REFRESH = 2;
-
-
+    public static final int CONNECT_TIMEOUT = 60;
+    public static final int READ_TIMEOUT = 100;
+    public static final int WRITE_TIMEOUT = 60;
+    public static final int ERROR = 0;
+    public static final int START_REFRESH = 1;
+    public static final int OPERATION_REFRESH = 2;
     public static String which_image;
     public static String which_city = "哈尔滨";
+    public static String province;
     public static int DB_VERSION = 1;
     public static String DB_NAME = "plans.db";
     public static String CHECKED_FALSE = "n";
@@ -33,6 +33,17 @@ public class Config {
     private static String CALANDER_URL = "content://com.android.calendar_page/calendars";
     private static String CALANDER_EVENT_URL = "content://com.android.calendar_page/events";
     private static String CALANDER_REMIDER_URL = "content://com.android.calendar_page/reminders";
+
+    public final static int[] colors = {
+            R.color.calendar_text_current_day,
+            R.color.calendar_text_first_day_of_month,
+            R.color.calendar_divider_color,
+            R.color.topbar,
+            R.color.tram,
+            R.color.agenda_list_header_divider,
+            R.color.colorAccent,
+            R.color.colorPrimary};
+    public final static int color_times = 8;
 
 
 }

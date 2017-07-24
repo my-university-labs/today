@@ -17,14 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.adapter.WeatherAdapter;
-import pers.dongchangzhang.todayisbeautiful.entity.FutureWeatherBean;
-import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfoBean;
-import pers.dongchangzhang.todayisbeautiful.entity.TodayWeatherBean;
-import pers.dongchangzhang.todayisbeautiful.entity.WeatherBean;
+import pers.dongchangzhang.todayisbeautiful.entity.FutureWeather;
+import pers.dongchangzhang.todayisbeautiful.entity.MoreWeatherInfo;
+import pers.dongchangzhang.todayisbeautiful.entity.TodayWeather;
+import pers.dongchangzhang.todayisbeautiful.entity.Weather;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.GetHttpInfo;
 import pers.dongchangzhang.todayisbeautiful.utils.MyDecoration;
 
+import static pers.dongchangzhang.todayisbeautiful.Config.ERROR;
 import static pers.dongchangzhang.todayisbeautiful.Config.OPERATION_REFRESH;
 import static pers.dongchangzhang.todayisbeautiful.Config.START_REFRESH;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
@@ -36,7 +37,7 @@ import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 public class WeatherPage extends Fragment {
 
     private WeatherAdapter adapter;
-    private List<WeatherBean> list = new ArrayList<>();
+    private List<Weather> list = new ArrayList<>();
     private SwipeRefreshLayout swipFresh;
 
     private Handler handler = new Handler() {
@@ -44,27 +45,32 @@ public class WeatherPage extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             Log.d("TAG", "handleMessage: fsdaidjfas");
-            List<WeatherBean> tmp;
+            List<Weather> tmp;
             switch(msg.what) {
                 case START_REFRESH:
-                    tmp = (List<WeatherBean>) msg.obj;
-                    list.add((TodayWeatherBean) tmp.get(0));
+                    tmp = (List<Weather>) msg.obj;
+                    list.add((TodayWeather) tmp.get(0));
                     for (int i = 1; i < tmp.size() - 1; ++i)
-                        list.add((FutureWeatherBean)tmp.get(i));
-                    list.add((MoreWeatherInfoBean) tmp.get(tmp.size() - 1));
-
+                        list.add((FutureWeather)tmp.get(i));
+                    list.add((MoreWeatherInfo) tmp.get(tmp.size() - 1));
                     adapter.notifyDataSetChanged();
                     break;
                 case OPERATION_REFRESH:
                     list.clear();
-                    tmp = (List<WeatherBean>) msg.obj;
-                    list.add((TodayWeatherBean) tmp.get(0));
+                    tmp = (List<Weather>) msg.obj;
+                    list.add((TodayWeather) tmp.get(0));
                     for (int i = 1; i < tmp.size() - 1; ++i)
-                        list.add((FutureWeatherBean)tmp.get(i));
-                    list.add((MoreWeatherInfoBean) tmp.get(tmp.size() - 1));
+                        list.add((FutureWeather)tmp.get(i));
+                    list.add((MoreWeatherInfo) tmp.get(tmp.size() - 1));
                     adapter.notifyDataSetChanged();
-                    Toast.makeText((MainActivity)getActivity(), "更新完成", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((MainActivity) getActivity(), "更新完成", Toast.LENGTH_SHORT).show();
                     swipFresh.setRefreshing(false);
+                    break;
+                case ERROR:
+                    list.clear();
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText((MainActivity)getActivity(), "没有数据", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }

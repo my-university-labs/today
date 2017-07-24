@@ -18,25 +18,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             + "time text, "
             + "title text, "
             + "content text)";
-    private final String SETTINGS =  "create table Settings ("
-            + "city text)";
-    private final String EVENT =  "create table Events ("
+    private final String EVENT = "create table Events ("
             + "id integer primary key autoincrement, "
-            + "checked int, "
-            + "time text, "
             + "title text, "
-            + "content text)";
+            + "description text, "
+            + "location text, "
+            + "color integer, "
+            + "startTime text, "
+            + "endTime text, "
+            + "allDay text)";
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         mContext = context;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(PLANINFORMATION);
-            db.execSQL(SETTINGS);
             db.execSQL(EVENT);
 
             Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
@@ -44,10 +45,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
             db.execSQL("drop table if exists PlanInformations");
+            db.execSQL("drop table if exists Events");
             onCreate(db);
         } catch (Exception e) {
             ;

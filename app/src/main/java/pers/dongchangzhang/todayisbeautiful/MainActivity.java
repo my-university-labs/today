@@ -2,12 +2,9 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,26 +16,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.dao.AssetsDatabaseManager;
-import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
-import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
-import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_FALSE;
-import static pers.dongchangzhang.todayisbeautiful.Config.CHINA_PROVINCE;
-import static pers.dongchangzhang.todayisbeautiful.Config.DB_NAME;
-import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DB";
-    //    fragment item
     private CityPage cityPage;
     private PlanPage planPage;
     private WeatherPage weatherPage;
@@ -47,9 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private CalendarPage calendarPage;
     private FragmentTransaction fTransaction;
     private List<CityPage> backup = new ArrayList<>();
-// slide menu
+    // slide menu
     private DrawerLayout drawer_layout;
-
 
 
     @Override
@@ -62,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toobar = (Toolbar) findViewById(R.id.toolbar);
         toobar.setTitle("");
         // which city_page now
-        TextView place = (TextView)findViewById(R.id.titles);
+        TextView place = (TextView) findViewById(R.id.titles);
         place.setText(which_city);
         setSupportActionBar(toobar);
-       init_fragment();
+        init_fragment();
         // slide menu
         init_slide_menu();
         fTransaction = fManager.beginTransaction();
@@ -75,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         fTransaction.commit();
 
 
-
         AssetsDatabaseManager.initManager(getApplication());
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.weather_menu, menu);
@@ -88,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 return true;
             }
+
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 return true;
@@ -95,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         };
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -112,28 +105,31 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void hideAllFragment(FragmentTransaction fragmentTransaction){
-        if(weatherPage != null)fragmentTransaction.hide(weatherPage);
-        if(cityPage != null)fragmentTransaction.hide(cityPage);
-        if(planPage != null)fragmentTransaction.hide(planPage);
-        if(newPlanPage != null)fragmentTransaction.hide(newPlanPage);
-        if(calendarPage != null)fragmentTransaction.hide(calendarPage);
+
+    private void hideAllFragment(FragmentTransaction fragmentTransaction) {
+        if (weatherPage != null) fragmentTransaction.hide(weatherPage);
+        if (cityPage != null) fragmentTransaction.hide(cityPage);
+        if (planPage != null) fragmentTransaction.hide(planPage);
+        if (newPlanPage != null) fragmentTransaction.hide(newPlanPage);
+        if (calendarPage != null) fragmentTransaction.hide(calendarPage);
 
         for (CityPage cp : backup) {
             try {
                 fragmentTransaction.hide(cp);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 ;
             }
         }
     }
+
     private void init_fragment() {
         fManager = getFragmentManager();
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
     }
+
     private void init_slide_menu() {
-        drawer_layout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
@@ -141,14 +137,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
         }
-        final NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
+        final NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 fTransaction = fManager.beginTransaction();
 
-                TextView place = (TextView)findViewById(R.id.titles);
-                switch(item.getItemId()) {
+                TextView place = (TextView) findViewById(R.id.titles);
+                switch (item.getItemId()) {
                     case R.id.nav_weather:
                         hideAllFragment(fTransaction);
                         place.setText(which_city);
@@ -199,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
                             calendarPage = new CalendarPage();
                             fTransaction.add(R.id.ly_content, calendarPage);
                         } else {
-                            fTransaction.show(calendarPage);
+                            fTransaction.remove(calendarPage);
+                            calendarPage = new CalendarPage();
+                            fTransaction.add(R.id.ly_content, calendarPage);
                         }
                         drawer_layout.closeDrawers();
                         break;
@@ -218,10 +216,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeToCity(String id, String parent_id, String city) {
-        final NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
+        final NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         navView.setCheckedItem(R.id.nav_weather);
         which_city = city;
-        TextView place = (TextView)findViewById(R.id.titles);
+        TextView place = (TextView) findViewById(R.id.titles);
         place.setText(city);
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
@@ -235,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
         fTransaction.add(R.id.ly_content, cityPage);
         fTransaction.commit();
     }
+
     public void jumpToWeatherPage(String city) {
-        Toast.makeText(this, city, Toast.LENGTH_SHORT).show();
         fTransaction = fManager.beginTransaction();
         removeTmpCityPage(fTransaction);
         hideAllFragment(fTransaction);
@@ -247,8 +245,9 @@ public class MainActivity extends AppCompatActivity {
         fTransaction.commit();
 
     }
+
     public void newAPlan() {
-        TextView place = (TextView)findViewById(R.id.titles);
+        TextView place = (TextView) findViewById(R.id.titles);
         place.setText("新的计划");
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
@@ -260,8 +259,9 @@ public class MainActivity extends AppCompatActivity {
         }
         fTransaction.commit();
     }
+
     public void cancelNewPlan() {
-        TextView place = (TextView)findViewById(R.id.titles);
+        TextView place = (TextView) findViewById(R.id.titles);
         place.setText("出行计划");
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
@@ -273,21 +273,23 @@ public class MainActivity extends AppCompatActivity {
         }
         fTransaction.commit();
     }
-    public void commitNewPlan() {
+
+    public void commitNewPlan() throws ParseException {
         planPage.reRefresh();
         cancelNewPlan();
     }
 
-    private void removeTmpCityPage(FragmentTransaction  fTransaction ) {
+    private void removeTmpCityPage(FragmentTransaction fTransaction) {
         for (CityPage cp : backup) {
             try {
                 fTransaction.remove(cp);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 ;
             }
         }
         backup.clear();
     }
+
     private boolean saveDataIntoPreferences(String fileName, String cityName) {
         boolean saveSuccessfully = false;
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
@@ -296,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
         saveSuccessfully = edit.commit();
         return saveSuccessfully;
     }
+
     private void sendSMS(String smsBody)
 
     {

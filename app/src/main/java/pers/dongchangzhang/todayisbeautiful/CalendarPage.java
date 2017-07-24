@@ -2,12 +2,11 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.tibolte.agendacalendarview.AgendaCalendarView;
 import com.github.tibolte.agendacalendarview.CalendarPickerController;
@@ -15,12 +14,23 @@ import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent;
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.DayItem;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 
+import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+import static pers.dongchangzhang.todayisbeautiful.Config.DB_NAME;
+import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
+import static pers.dongchangzhang.todayisbeautiful.Config.color_times;
+import static pers.dongchangzhang.todayisbeautiful.Config.colors;
+import static pers.dongchangzhang.todayisbeautiful.utils.Tools.changeStringToCalendar;
 
 
 /**
@@ -32,8 +42,8 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.calendar_page,container,false);
-        mAgendaCalendarView = (AgendaCalendarView)view.findViewById(R.id.agenda_calendar_view);
+        View view = inflater.inflate(R.layout.calendar_page, container, false);
+        mAgendaCalendarView = (AgendaCalendarView) view.findViewById(R.id.agenda_calendar_view);
 
         Calendar minDate = Calendar.getInstance();
         Calendar maxDate = Calendar.getInstance();
@@ -44,24 +54,52 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
 
         List<CalendarEvent> eventList = new ArrayList<>();
 
-        mockList(eventList);
-        mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);;
+        try {
+            mockList(eventList);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), this);
+        ;
         return view;
     }
-    private void mockList(List<CalendarEvent> eventList) {
+
+    private void mockList(List<CalendarEvent> eventList) throws ParseException {
         Calendar startTime1 = Calendar.getInstance();
         Calendar endTime1 = Calendar.getInstance();
         endTime1.add(Calendar.MONTH, 1);
-        BaseCalendarEvent event1 = new BaseCalendarEvent(1, R.color.blue_selected, "a", "b", "c", startTime1.get(Calendar.YEAR) , 1, 3, "11");
+        BaseCalendarEvent event1 = new BaseCalendarEvent(1, R.color.blue_selected, "a", "b", "c", startTime1.get(Calendar.YEAR), 1, 3, "11");
         eventList.add(event1);
 
         Calendar startTime2 = Calendar.getInstance();
         startTime2.add(Calendar.DAY_OF_YEAR, 1);
         Calendar endTime2 = Calendar.getInstance();
-        endTime2.add(Calendar.DAY_OF_YEAR, 3);
+        endTime2.add(Calendar.DAY_OF_YEAR, 1);
         BaseCalendarEvent event2 = new BaseCalendarEvent("Visit to Dalvík", "A beautiful small town", "Dalvík",
                 R.color.colorPrimary, startTime2, endTime2, true);
         eventList.add(event2);
+
+
+        BaseCalendarEvent event;
+        MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
+        List<Map> maps = operator.search("Events");
+        Random r = new Random();
+        for (Map m : maps) {
+            int which = r.nextInt(color_times);
+            Log.d(TAG, "mockList: " + which);
+            event = new BaseCalendarEvent(
+                    m.get("title").toString(),
+                    m.get("description").toString(),
+                    m.get("location").toString(),
+                    colors[which],
+                    changeStringToCalendar(m.get("startTime").toString()),
+                    changeStringToCalendar(m.get("startTime").toString()),
+                    false);
+            Log.d(TAG, "onCreateView: " + m.get("time"));
+            Log.d(TAG, "onCreateView: " + m.get("title"));
+            Log.d(TAG, "onCreateView: " + m.get("content"));
+            eventList.add(event);
+        }
 
 
     }
@@ -73,6 +111,7 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
 
     @Override
     public void onEventSelected(CalendarEvent event) {
+        Toast.makeText(getActivity(), event.getTitle(), Toast.LENGTH_SHORT).show();
 
     }
 

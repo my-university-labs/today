@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="2dp"
-    android:foreground = "?attr/selectableItemBackground"
     android:layout_margin="16sp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="2dp"
     app:elevation="1dp">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/new_plan_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="请输入计划标题"
-         />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/new_plan_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="标题"
+            android:inputType="textPersonName" />
 
 
-    <EditText
-        android:id="@+id/when_happened"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:cursorVisible="false"
-        android:hint="点击选择时间"
-        android:inputType="time" />
+        <EditText
+            android:id="@+id/when_happened"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:hint="时间"
+            android:inputType="time" />
 
-    <EditText
-        android:id="@+id/new_plan_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:hint="输入计划内容"/>
+        <EditText
+            android:id="@+id/new_plan_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="描述"
+            android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/plan_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="取消" />
+        <EditText
+            android:id="@+id/new_plan_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="地点"
+            android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/plan_commit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="确认" />
+        <Button
+            android:id="@+id/plan_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="取消" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/plan_commit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="确认" />
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

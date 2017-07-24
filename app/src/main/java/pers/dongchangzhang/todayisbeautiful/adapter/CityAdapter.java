@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pers.dongchangzhang.todayisbeautiful.entity.CityBean;
+import pers.dongchangzhang.todayisbeautiful.entity.City;
 import pers.dongchangzhang.todayisbeautiful.inter.MyItemOnClickListener;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
@@ -18,15 +18,15 @@ import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
  * Created by cc on 17-7-19.
  */
 
-public class CityAdapter extends  RecyclerView.Adapter<CityAdapter.ViewHolder> {
+public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
-    private List<CityBean> mCityEntityList;
+    private List<City> mCityEntityList;
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private  MyItemOnClickListener mMyItemOnClickListener;
+    private MyItemOnClickListener mMyItemOnClickListener;
 
 
-    public CityAdapter(Context context, List<CityBean> objects) {
+    public CityAdapter(Context context, List<City> objects) {
         this.mCityEntityList = objects;
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -36,13 +36,13 @@ public class CityAdapter extends  RecyclerView.Adapter<CityAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
-        return  new ViewHolder(mLayoutInflater.inflate(R.layout.city_item, parent, false), mMyItemOnClickListener);
+        return new ViewHolder(mLayoutInflater.inflate(R.layout.city_item, parent, false), mMyItemOnClickListener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            CityBean cityEntity = (CityBean) mCityEntityList.get(position);
-            holder.city.setText(cityEntity.getName());
+        City cityEntity = (City) mCityEntityList.get(position);
+        holder.city.setText(cityEntity.getName());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CityAdapter extends  RecyclerView.Adapter<CityAdapter.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView city;
         View cityView;
         MyItemOnClickListener mListener;
@@ -66,13 +66,14 @@ public class CityAdapter extends  RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            if(mListener!=null){
-                mListener.onItemOnClick(view,getPosition());
+            if (mListener != null) {
+                mListener.onItemOnClick(view, getPosition());
             }
         }
     }
-    public void setItemOnClickListener(MyItemOnClickListener listener){
-        mMyItemOnClickListener=listener;
+
+    public void setItemOnClickListener(MyItemOnClickListener listener) {
+        mMyItemOnClickListener = listener;
     }
 
 }

@@ -35,6 +35,7 @@ public class MyDatabaseOperator {
     public List<Map> search(String tableName) {
         return search(tableName, null);
     }
+
     public List<Map> search(String tableName, String searchWhat) {
         cursor = db.query(tableName, null, searchWhat, null, null, null, null);
         if (cursor != null) {
@@ -57,15 +58,19 @@ public class MyDatabaseOperator {
         cursor.close();
         return null;
     }
+
     public long insert(String tableName, ContentValues values) {
         return db.insert(tableName, null, values);
     }
+
     public int erase(String tableName, String whereClause, String[] whereArgs) {
         return db.delete(tableName, whereClause, whereArgs);
     }
+
     public int update(String tableName, ContentValues values, String whereClause, String[] whereArgs) {
         return db.update(tableName, values, whereClause, whereArgs);
     }
+
     public boolean close() {
         try {
             this.db.close();

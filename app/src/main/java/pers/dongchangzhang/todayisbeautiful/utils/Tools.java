@@ -11,11 +11,15 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.dao.AssetsDatabaseManager;
-import pers.dongchangzhang.todayisbeautiful.entity.CityBean;
+import pers.dongchangzhang.todayisbeautiful.entity.City;
 
 /**
  * Created by cc on 17-7-19.
@@ -36,13 +40,15 @@ public class Tools {
         }
         return null;
     }
-    public static int getImageByReflect(Context con, String resourceName){
-        Resources res= con.getResources();
-        int picid = res.getIdentifier(resourceName,"drawable",con.getPackageName());
+
+    public static int getImageByReflect(Context con, String resourceName) {
+        Resources res = con.getResources();
+        int picid = res.getIdentifier(resourceName, "drawable", con.getPackageName());
         return picid;
     }
-    public static List<CityBean> getCityInfoFromDB(String id, String parent_id) {
-        List<CityBean> list = new ArrayList<CityBean>();
+
+    public static List<City> getCityInfoFromDB(String id, String parent_id) {
+        List<City> list = new ArrayList<City>();
         String TAG = "getCityInfoFromDB";
         AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();
         SQLiteDatabase city = mg.getDatabase("city.db");
@@ -55,10 +61,10 @@ public class Tools {
                 cursor = city.rawQuery("select id, parent_id, name from district where id=" + id, null);
                 while (cursor.moveToNext()) {
                     String name = cursor.getString(2);
-                    list.add(new CityBean("-", name, "-"));
+                    list.add(new City("-", name, "-"));
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
 
         }
         boolean have = false;
@@ -70,10 +76,10 @@ public class Tools {
                 String i = cursor.getString(0);
                 String pid = cursor.getString(1);
                 String name = cursor.getString(2);
-                list.add(new CityBean(i, name, pid));
+                list.add(new City(i, name, pid));
                 Log.d(TAG, "result: id=" + i + " name=" + name + " parent_id=" + pid);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
 
         }
         if (!have) {
@@ -82,5 +88,18 @@ public class Tools {
 //        cursor.close();
 //        city.close();
         return list;
+    }
+
+    public static Calendar changeStringToCalendar(String input) throws ParseException {
+        Log.d("TOOLS", "changeStringToCalendar: " + input);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = sdf.parse(input);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
+    public static String changDateToString(Date date) {
+        return (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(date);
     }
 }

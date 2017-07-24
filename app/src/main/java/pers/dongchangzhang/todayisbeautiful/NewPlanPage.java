@@ -17,16 +17,14 @@ import com.codbking.widget.OnChangeLisener;
 import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_FALSE;
+import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_TRUE;
 import static pers.dongchangzhang.todayisbeautiful.Config.DB_NAME;
 import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
 
@@ -38,11 +36,12 @@ public class NewPlanPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_plan_page, container, false);
-        final EditText select_time = (EditText)view.findViewById(R.id.when_happened);
-        final EditText plan_title = (EditText)view.findViewById(R.id.new_plan_title);
-        final EditText plan_content = (EditText)view.findViewById(R.id.new_plan_content);
-        final Button cancel = (Button)view.findViewById(R.id.plan_cancel);
-        final Button commit = (Button)view.findViewById(R.id.plan_commit);
+        final EditText select_time = (EditText) view.findViewById(R.id.when_happened);
+        final EditText plan_title = (EditText) view.findViewById(R.id.new_plan_title);
+        final EditText plan_content = (EditText) view.findViewById(R.id.new_plan_content);
+        final EditText plan_location = (EditText) view.findViewById(R.id.new_plan_location);
+        final Button cancel = (Button) view.findViewById(R.id.plan_cancel);
+        final Button commit = (Button) view.findViewById(R.id.plan_commit);
 
 
         select_time.setOnTouchListener(new View.OnTouchListener() {
@@ -64,7 +63,7 @@ public class NewPlanPage extends Fragment {
                     dialog.setOnChangeLisener(new OnChangeLisener() {
                         @Override
                         public void onChanged(Date date) {
-                            String sdate=(new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(date);
+                            String sdate = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(date);
                             select_time.setText(sdate);
                         }
                     });
@@ -72,7 +71,7 @@ public class NewPlanPage extends Fragment {
                     dialog.setOnSureLisener(new OnSureLisener() {
                         @Override
                         public void onSure(Date date) {
-                            String sdate=(new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(date);
+                            String sdate = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(date);
                             select_time.setText(sdate);
                         }
                     });
@@ -86,34 +85,41 @@ public class NewPlanPage extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).cancelNewPlan();
+                ((MainActivity) getActivity()).cancelNewPlan();
             }
         });
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText((MainActivity)getActivity(), "commit", Toast.LENGTH_SHORT).show();
-                MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity)getActivity(), DB_NAME, DB_VERSION);
-                ContentValues value = new ContentValues();
-                value.put("time", select_time.getText().toString());
-                value.put("title", plan_title.getText().toString());
-                value.put("content", plan_content.getText().toString());
-                value.put("checked", CHECKED_FALSE);
-                operator.insert("PlanInformations", value);
-                operator.close();
+                if (plan_title.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "请输入标题", Toast.LENGTH_SHORT).show();
+                } else if (select_time.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), "请输入时间", Toast.LENGTH_SHORT).show();
+                } else {
+                    MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
+                    ContentValues value = new ContentValues();
+                    value.put("title", plan_title.getText().toString());
+                    value.put("description", plan_content.getText().toString());
+                    value.put("location", plan_location.getText().toString());
+                    value.put("color", 1);
+                    value.put("startTime", select_time.getText().toString());
+                    value.put("endTime", select_time.getText().toString());
+                    value.put("allDay", CHECKED_TRUE);
+                    operator.insert("Events", value);
 
-                List<Map> maps= operator.search("PlanInformations");
-                for (Map m : maps) {
-                    Log.d(TAG, "onCreateView: " + m.get("time"));
-                    Log.d(TAG, "onCreateView: " + m.get("title"));
-                    Log.d(TAG, "onCreateView: " + m.get("content"));
-                    Log.d(TAG, "onClick: " + m.get("checked"));
+                    try {
+                        ((MainActivity) getActivity()).commitNewPlan();
+                        Toast.makeText((MainActivity) getActivity(), "commit" + select_time.getText().toString(), Toast.LENGTH_SHORT).show();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Toast.makeText((MainActivity) getActivity(), "commit error" + select_time.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+
                 }
-                ((MainActivity)getActivity()).commitNewPlan();
-
-
             }
         });
         return view;
     }
 }
+
