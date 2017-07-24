@@ -11,10 +11,14 @@ public class TodayWeatherBean extends WeatherBean {
     private String last_update;
 
     public TodayWeatherBean(TodayWeatherFromJsonBean twjson, FutureWeatherFromJsonBean fwjson) {
-        location = twjson.getResults().get(0).getLocation();
-        now = twjson.getResults().get(0).getNow();
-        today = fwjson.getResults().get(0).getDaily().get(0);
-        last_update = twjson.getResults().get(0).getLast_update();
+        try {
+            location = twjson.getResults().get(0).getLocation();
+            now = twjson.getResults().get(0).getNow();
+            today = fwjson.getResults().get(0).getDaily().get(0);
+            last_update = twjson.getResults().get(0).getLast_update();
+        } catch (Exception e) {
+
+        }
     }
 
     public TodayWeatherFromJsonBean.Results.Location getLocation() {

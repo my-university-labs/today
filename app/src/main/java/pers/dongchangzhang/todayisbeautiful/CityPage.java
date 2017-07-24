@@ -20,6 +20,7 @@ import pers.dongchangzhang.todayisbeautiful.inter.MyItemOnClickListener;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.GetHttpInfo;
 import pers.dongchangzhang.todayisbeautiful.utils.MyDecoration;
+import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
 import static android.content.ContentValues.TAG;
 
@@ -62,19 +63,27 @@ public class CityPage extends Fragment  {
         RecyclerView citys = (RecyclerView) view.findViewById(R.id.city_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager((MainActivity)getActivity());
         citys.setLayoutManager(layoutManager);
+        final String id = getArguments().getString("id");
+        final String parent_id = getArguments().getString("parent_id");
+        final String city = getArguments().getString("city");
+        list = Tools.getCityInfoFromDB(id, parent_id);
+        if (list.size() == 0) {
+            Message msg = new Message();
+            msg.what = 0;
+            msg.obj = city;
+            handler.sendMessage(msg);
+        }
         adapter = new CityAdapter((MainActivity)getActivity(), list);
 
         citys.addItemDecoration(new MyDecoration((MainActivity)getActivity(), MyDecoration.VERTICAL_LIST));
 
-        final String code = getArguments().getString("code");
-        final String url = getArguments().getString("url");
-        final String city = getArguments().getString("city");
-        GetHttpInfo.getCityInfo(handler, url, code, city);
+//        final String city = getArguments().getString("city");
+//        GetHttpInfo.getCityInfo(handler, url, code, city);
 
         adapter.setItemOnClickListener(new MyItemOnClickListener() {
             @Override
             public void onItemOnClick(View view, int position) {
-                ((MainActivity)getActivity()).changeToCity(url + "/" + code, list.get(position).getId(), list.get(position).getName());
+                ((MainActivity)getActivity()).changeToCity(list.get(position).getId(), list.get(position).getParent_id(), list.get(position).getName());
 
             }
         });

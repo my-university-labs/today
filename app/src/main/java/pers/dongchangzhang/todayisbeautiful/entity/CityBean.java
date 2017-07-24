@@ -7,10 +7,17 @@ package pers.dongchangzhang.todayisbeautiful.entity;
 public class CityBean {
     private String id;
     private String name;
+    private String parent_id;
     public CityBean() {}
     public CityBean(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public CityBean(String id, String name, String parent_id) {
+        this.id = id;
+        this.name = name;
+        this.parent_id = parent_id;
     }
 
     public String getId() {
@@ -27,5 +34,13 @@ public class CityBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
     }
 }

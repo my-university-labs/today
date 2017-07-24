@@ -4,7 +4,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,8 +25,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import pers.dongchangzhang.todayisbeautiful.dao.AssetsDatabaseManager;
 import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
+import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
 import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_FALSE;
 import static pers.dongchangzhang.todayisbeautiful.Config.CHINA_PROVINCE;
@@ -30,7 +37,8 @@ import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
 public class MainActivity extends AppCompatActivity {
-//    fragment item
+    private static final String TAG = "DB";
+    //    fragment item
     private CityPage cityPage;
     private PlanPage planPage;
     private WeatherPage weatherPage;
@@ -65,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         weatherPage = new WeatherPage();
         fTransaction.add(R.id.ly_content, weatherPage);
         fTransaction.commit();
+
+
+
+        AssetsDatabaseManager.initManager(getApplication());
+
 
     }
     @Override
@@ -156,8 +169,9 @@ public class MainActivity extends AppCompatActivity {
                         if (cityPage == null) {
                             cityPage = new CityPage();
                             Bundle bundle = new Bundle();
-                            bundle.putString("code", "china");
-                            bundle.putString("url", CHINA_PROVINCE);
+                            bundle.putString("id", "0");
+                            bundle.putString("parent_id", "0");
+                            bundle.putString("city", which_city);
                             cityPage.setArguments(bundle);
                             fTransaction.add(R.id.ly_content, cityPage);
                         } else {
@@ -189,6 +203,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         drawer_layout.closeDrawers();
                         break;
+                    case R.id.nav_share:
+                        sendSMS("hello");
+                        navView.setCheckedItem(R.id.nav_weather);
+                        drawer_layout.closeDrawers();
+                        break;
+
                 }
                 fTransaction.commit();
                 return true;
@@ -197,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setCheckedItem(R.id.nav_weather);
     }
 
-    public void changeToCity(String url, String code, String city) {
+    public void changeToCity(String id, String parent_id, String city) {
         final NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
         navView.setCheckedItem(R.id.nav_weather);
         which_city = city;
@@ -207,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
         hideAllFragment(fTransaction);
         CityPage cityPage = new CityPage();
         Bundle bundle = new Bundle();
-        bundle.putString("code", code);
-        bundle.putString("url", url);
+        bundle.putString("id", id);
+        bundle.putString("parent_id", parent_id);
         bundle.putString("city", city);
         cityPage.setArguments(bundle);
         backup.add(cityPage);
@@ -275,6 +295,19 @@ public class MainActivity extends AppCompatActivity {
         edit.putString("cityName", cityName);
         saveSuccessfully = edit.commit();
         return saveSuccessfully;
+    }
+    private void sendSMS(String smsBody)
+
+    {
+
+        Uri smsToUri = Uri.parse("smsto:");
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+
+        intent.putExtra("sms_body", smsBody);
+
+        startActivity(intent);
+
     }
 
 }
