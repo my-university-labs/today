@@ -127,12 +127,8 @@ public class NewPlanPage extends Fragment {
 
                     try {
                         ((MainActivity) getActivity()).commitNewPlan();
-                        Toast.makeText((MainActivity) getActivity(), "commit" + select_time.getText().toString(), Toast.LENGTH_SHORT).show();
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        Toast.makeText((MainActivity) getActivity(), "commit error" + select_time.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
                     }
 
                 } else if (isEdit == TRUE) {

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -81,8 +80,8 @@ public class PlanPage extends Fragment {
                         list.remove(postion);
                         MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
                         operator.erase("Events", "id = ?", what);
-
                         adapter.notifyDataSetChanged();
+                        ((MainActivity)getActivity()).deletePlan();
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
@@ -110,7 +109,6 @@ public class PlanPage extends Fragment {
     }
 
     private void addPlan() {
-        Toast.makeText((MainActivity) getActivity(), "add", Toast.LENGTH_SHORT).show();
         ((MainActivity) getActivity()).newAPlan();
     }
 

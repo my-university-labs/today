@@ -2,15 +2,16 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Parcelable;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.dao.AssetsDatabaseManager;
-import pers.dongchangzhang.todayisbeautiful.entity.Event;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
 import static pers.dongchangzhang.todayisbeautiful.Config.FALSE;
@@ -52,7 +53,24 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
     // slide menu
     private DrawerLayout drawer_layout;
 
-    Receiver myReceiver;
+    private Receiver myReceiver;
+
+    private MainService.AlarmBinder mAlarmBinder;
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mAlarmBinder = (MainService.AlarmBinder)iBinder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
 
         myReceiver.setMessage(this);
 
+        Intent alarm = new Intent(this, MainService.class);
+        bindService(alarm, connection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -127,6 +147,19 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void getMsg(boolean isAlarm, String title, String info) {
+        if (isAlarm) {
+            sendNotify(title, info);
+        } else {
+            if (first_time_in) {
+                first_time_in = false;
+            } else {
+                Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
+                weatherPage.onRefresh(which_city);
+            }
+        }
     }
 
     private void hideAllFragment(FragmentTransaction fragmentTransaction) {
@@ -300,39 +333,12 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
     }
 
     public void commitNewPlan() throws ParseException {
+        mAlarmBinder.updateAlarm();
         planPage.reRefresh();
         cancelNewPlan();
     }
 
-    private void removeTmpCityPage(FragmentTransaction fTransaction) {
-        for (CityPage cp : backup) {
-            try {
-                fTransaction.remove(cp);
-            } catch (Exception e) {
-                ;
-            }
-        }
-        backup.clear();
-    }
 
-    private boolean saveDataIntoPreferences(String fileName, String cityName) {
-        boolean saveSuccessfully = false;
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString("cityName", cityName);
-        saveSuccessfully = edit.commit();
-        return saveSuccessfully;
-    }
-
-    private void sendSMS(String smsBody)
-
-    {
-        Uri smsToUri = Uri.parse("smsto:");
-        Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
-        intent.putExtra("sms_body", smsBody);
-        startActivity(intent);
-
-    }
     public void editPlan(String id) {
         TextView place = (TextView) findViewById(R.id.titles);
         place.setText("编辑计划");
@@ -351,15 +357,52 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
         fTransaction.add(R.id.ly_content, newPlanPage);
         fTransaction.commit();
     }
+    public void deletePlan() {
+        mAlarmBinder.updateAlarm();
 
-    @Override
-    public void getMsg(String str) {
-        Log.e(TAG, "getMsg: EEEEEE----------------------" );
-        if (first_time_in) {
-            first_time_in = false;
-        } else {
-            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-            weatherPage.onRefresh(which_city);
-        }
     }
+    private void sendSMS(String smsBody)
+
+    {
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+        intent.putExtra("sms_body", smsBody);
+        startActivity(intent);
+
+    }
+
+    private void sendNotify(String title, String info) {
+        NotificationManager notiManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setTicker("Today:行程计划提醒");
+        builder.setContentInfo("Info...");
+        builder.setContentTitle(title)
+                .setContentText(info)
+                .setFullScreenIntent(null, true)
+                .setSmallIcon(R.drawable.notify);
+        builder.setDefaults(Notification.DEFAULT_SOUND);
+        Notification notification = builder.build();
+        builder.setAutoCancel(true);
+        notiManager.notify(1003, notification);
+
+    }
+    private void removeTmpCityPage(FragmentTransaction fTransaction) {
+        for (CityPage cp : backup) {
+            try {
+                fTransaction.remove(cp);
+            } catch (Exception e) {
+                ;
+            }
+        }
+        backup.clear();
+    }
+    private boolean saveDataIntoPreferences(String fileName, String cityName) {
+        boolean saveSuccessfully = false;
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("cityName", cityName);
+        saveSuccessfully = edit.commit();
+        return saveSuccessfully;
+    }
+
 }

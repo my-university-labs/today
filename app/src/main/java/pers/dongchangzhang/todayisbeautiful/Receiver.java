@@ -12,11 +12,19 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        message.getMsg("开始更新天气信息...");
+        String r = intent.getStringExtra("type");
+//        Toast.makeText(context, r, Toast.LENGTH_SHORT).show();
+        if (r.equals("alarm")) {
+            String title = intent.getStringExtra("title");
+            String des = intent.getStringExtra("description");
+            message.getMsg(true, title,  des);
+        } else {
+            message.getMsg(false, "开始更新天气信息...", null);
+        }
     }
 
     interface Message {
-        public void getMsg(String str);
+        public void getMsg(boolean isAlarm, String title, String info);
     }
 
     public void setMessage(Message message) {

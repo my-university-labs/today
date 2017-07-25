@@ -71,12 +71,13 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
         List<Map> maps = operator.search("Events");
         Random r = new Random();
         for (Map m : maps) {
+            Log.d(TAG, "mockList: " +m.toString());
             int which = r.nextInt(color_times);
             Log.d(TAG, "mockList: " + which);
             event = new BaseCalendarEvent(
                     m.get("title").toString(),
-                    m.get("description").toString(),
                     m.get("location").toString(),
+                    m.get("description").toString(),
                     colors[which],
                     changeStringToCalendar(m.get("startTime").toString()),
                     changeStringToCalendar(m.get("startTime").toString()),
@@ -97,7 +98,7 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
 
     @Override
     public void onEventSelected(CalendarEvent event) {
-        Toast.makeText(getActivity(), event.getTitle() , Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), event.getTitle() , Toast.LENGTH_SHORT).show();
 
     }
 
