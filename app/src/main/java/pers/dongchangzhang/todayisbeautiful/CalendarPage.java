@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Random;
 
 import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
+import pers.dongchangzhang.todayisbeautiful.entity.Event;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
@@ -65,21 +66,6 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
     }
 
     private void mockList(List<CalendarEvent> eventList) throws ParseException {
-        Calendar startTime1 = Calendar.getInstance();
-        Calendar endTime1 = Calendar.getInstance();
-        endTime1.add(Calendar.MONTH, 1);
-        BaseCalendarEvent event1 = new BaseCalendarEvent(1, R.color.blue_selected, "a", "b", "c", startTime1.get(Calendar.YEAR), 1, 3, "11");
-        eventList.add(event1);
-
-        Calendar startTime2 = Calendar.getInstance();
-        startTime2.add(Calendar.DAY_OF_YEAR, 1);
-        Calendar endTime2 = Calendar.getInstance();
-        endTime2.add(Calendar.DAY_OF_YEAR, 1);
-        BaseCalendarEvent event2 = new BaseCalendarEvent("Visit to Dalvík", "A beautiful small town", "Dalvík",
-                R.color.colorPrimary, startTime2, endTime2, true);
-        eventList.add(event2);
-
-
         BaseCalendarEvent event;
         MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
         List<Map> maps = operator.search("Events");
@@ -111,7 +97,7 @@ public class CalendarPage extends Fragment implements CalendarPickerController {
 
     @Override
     public void onEventSelected(CalendarEvent event) {
-        Toast.makeText(getActivity(), event.getTitle(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), event.getTitle() , Toast.LENGTH_SHORT).show();
 
     }
 

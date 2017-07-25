@@ -89,6 +89,11 @@ public class CityPage extends Fragment {
                 ((MainActivity) getActivity()).changeToCity(list.get(position).getId(), list.get(position).getParent_id(), list.get(position).getName());
 
             }
+
+            @Override
+            public boolean onItemOnLongClick(View view, int postion) {
+                return false;
+            }
         });
         citys.setAdapter(adapter);
 

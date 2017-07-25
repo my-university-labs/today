@@ -20,28 +20,45 @@ import com.codbking.widget.bean.DateType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import pers.dongchangzhang.todayisbeautiful.dao.MyDatabaseOperator;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
-import static pers.dongchangzhang.todayisbeautiful.Config.CHECKED_TRUE;
 import static pers.dongchangzhang.todayisbeautiful.Config.DB_NAME;
 import static pers.dongchangzhang.todayisbeautiful.Config.DB_VERSION;
+import static pers.dongchangzhang.todayisbeautiful.Config.FALSE;
+import static pers.dongchangzhang.todayisbeautiful.Config.TRUE;
 
 /**
  * Created by cc on 17-7-23.
  */
 
 public class NewPlanPage extends Fragment {
+    private String isEdit;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_plan_page, container, false);
+
+        isEdit = getArguments().getString("isEdit");
         final EditText select_time = (EditText) view.findViewById(R.id.when_happened);
         final EditText plan_title = (EditText) view.findViewById(R.id.new_plan_title);
         final EditText plan_content = (EditText) view.findViewById(R.id.new_plan_content);
         final EditText plan_location = (EditText) view.findViewById(R.id.new_plan_location);
         final Button cancel = (Button) view.findViewById(R.id.plan_cancel);
         final Button commit = (Button) view.findViewById(R.id.plan_commit);
+
+        if (isEdit == TRUE) {
+            MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
+            List<Map> list = operator.searchOneEvent(getArguments().getString("id"));
+            Log.d("TAG", "onCreateView: " + list.toString());
+            plan_title.setText(list.get(0).get("title").toString());
+            select_time.setText(list.get(0).get("startTime").toString());
+            plan_content.setText(list.get(0).get("description").toString());
+            plan_location.setText(list.get(0).get("location").toString());
+
+        }
 
 
         select_time.setOnTouchListener(new View.OnTouchListener() {
@@ -91,11 +108,12 @@ public class NewPlanPage extends Fragment {
         commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (plan_title.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "请输入标题", Toast.LENGTH_SHORT).show();
                 } else if (select_time.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "请输入时间", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (isEdit == FALSE){
                     MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
                     ContentValues value = new ContentValues();
                     value.put("title", plan_title.getText().toString());
@@ -104,7 +122,7 @@ public class NewPlanPage extends Fragment {
                     value.put("color", 1);
                     value.put("startTime", select_time.getText().toString());
                     value.put("endTime", select_time.getText().toString());
-                    value.put("allDay", CHECKED_TRUE);
+                    value.put("allDay", TRUE);
                     operator.insert("Events", value);
 
                     try {
@@ -114,6 +132,25 @@ public class NewPlanPage extends Fragment {
                         e.printStackTrace();
                         Toast.makeText((MainActivity) getActivity(), "commit error" + select_time.getText().toString(), Toast.LENGTH_SHORT).show();
 
+
+                    }
+
+                } else if (isEdit == TRUE) {
+                    Toast.makeText(getActivity(), "edit", Toast.LENGTH_SHORT).show();
+                    MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
+                    ContentValues value = new ContentValues();
+                    value.put("title", plan_title.getText().toString());
+                    value.put("description", plan_content.getText().toString());
+                    value.put("location", plan_location.getText().toString());
+                    value.put("color", 1);
+                    value.put("startTime", select_time.getText().toString());
+                    value.put("endTime", select_time.getText().toString());
+                    value.put("allDay", TRUE);
+                    operator.update("Events", value, "id = ?", new String[] {getArguments().getString("id")});
+                    try {
+                        ((MainActivity) getActivity()).commitNewPlan();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
 
                 }

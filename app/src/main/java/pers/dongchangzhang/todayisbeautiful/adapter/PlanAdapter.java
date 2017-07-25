@@ -53,7 +53,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView plan_title;
         TextView plan_time;
         TextView plan_content;
@@ -68,6 +68,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             plan_content = (TextView) itemView.findViewById(R.id.plan_content);
             this.mListener = myItemOnClickListener;
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -76,10 +77,23 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
                 mListener.onItemOnClick(view, getPosition());
             }
         }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (mListener != null) {
+                mListener.onItemOnLongClick(view, getPosition());
+            }
+            return false;
+        }
     }
 
     public void setItemOnClickListener(MyItemOnClickListener listener) {
         mMyItemOnClickListener = listener;
+    }
+
+    public boolean setItemOnLongClickListener(MyItemOnClickListener listener) {
+        mMyItemOnClickListener = listener;
+        return false;
     }
 
 }

@@ -27,8 +27,8 @@ public class Config {
     public static String province;
     public static int DB_VERSION = 1;
     public static String DB_NAME = "plans.db";
-    public static String CHECKED_FALSE = "n";
-    public static String CHECKED_TRUE = "y";
+    public static String FALSE = "n";
+    public static String TRUE = "y";
 
     private static String CALANDER_URL = "content://com.android.calendar_page/calendars";
     private static String CALANDER_EVENT_URL = "content://com.android.calendar_page/events";
@@ -44,6 +44,10 @@ public class Config {
             R.color.colorAccent,
             R.color.colorPrimary};
     public final static int color_times = 8;
+
+    public static String weather_information = null;
+
+    public static boolean first_time_in = true;
 
 
 }

@@ -93,7 +93,10 @@ public class GetHttpInfo {
                 }
 
                 // today
-                infos.add(new TodayWeather(twjson, fwjson));
+                TodayWeather tw = new TodayWeather(twjson, fwjson);
+                infos.add(tw);
+                weather_information = which_city + "天气"+ tw.getNow().getText() +"，当前气温：" + tw.getNow().getTemperature()
+                        + "C，最高气温" + tw.getToday().getHigh()+"C，最低气温" + tw.getToday().getLow()+"C。";
                 // future;
                 FutureWeatherFromJson.Results.Location location = fwjson.getResults().get(0).getLocation();
                 String last_update = fwjson.getResults().get(0).getLast_update();

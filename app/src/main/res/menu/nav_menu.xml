@@ -21,11 +21,6 @@
             android:icon="@drawable/alarm"
             android:state_checked="true"
             android:title="@string/alert" />
-        <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/share"
-            android:state_checked="true"
-            android:title="@string/share" />
 
     </group>
 </menu>

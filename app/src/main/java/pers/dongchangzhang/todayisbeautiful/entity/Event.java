@@ -7,6 +7,7 @@ import java.util.Calendar;
  */
 
 public class Event {
+    private String id;
     private String mTitle;
     private String mDescription;
     private String mLocation;
@@ -23,6 +24,14 @@ public class Event {
         this.mStartTime = startTime;
         this.mEndTime = endTime;
         this.mAllDay = allDay;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getmTitle() {
@@ -80,4 +89,6 @@ public class Event {
     public void setmAllDay(boolean mAllDay) {
         this.mAllDay = mAllDay;
     }
+
+
 }

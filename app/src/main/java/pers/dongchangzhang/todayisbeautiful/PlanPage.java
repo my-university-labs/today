@@ -2,7 +2,9 @@ package pers.dongchangzhang.todayisbeautiful;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +51,7 @@ public class PlanPage extends Fragment {
         }
 
 
-        RecyclerView plans = (RecyclerView) view.findViewById(R.id.plan_list);
+        final RecyclerView plans = (RecyclerView) view.findViewById(R.id.plan_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager((MainActivity) getActivity());
         plans.setLayoutManager(layoutManager);
         adapter = new PlanAdapter((MainActivity) getActivity(), list);
@@ -59,7 +61,39 @@ public class PlanPage extends Fragment {
         adapter.setItemOnClickListener(new MyItemOnClickListener() {
             @Override
             public void onItemOnClick(View view, int position) {
+                ((MainActivity)getActivity()).editPlan(list.get(position).getId());
 
+            }
+
+            @Override
+            public boolean onItemOnLongClick(View view, final int postion) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setTitle("删除计划" + list.get(postion).getmTitle());
+                builder.setMessage("确定删除吗？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String id = list.get(postion).getId();
+                        String[] what = {id,};
+                        list.remove(postion);
+                        MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
+                        operator.erase("Events", "id = ?", what);
+
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                    }
+                });
+                builder.show();
+                return false;
             }
         });
         plans.setAdapter(adapter);
@@ -85,13 +119,16 @@ public class PlanPage extends Fragment {
         MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
         List<Map> maps = operator.search("Events");
         for (Map m : maps) {
-            list.add(new Event(m.get("title").toString(),
+
+            Event event = new Event(m.get("title").toString(),
                     m.get("description").toString(),
                     m.get("location").toString(),
                     R.color.blue_selected,
                     changeStringToCalendar(m.get("startTime").toString()),
                     changeStringToCalendar(m.get("startTime").toString()),
-                    true));
+                    true);
+            event.setId(m.get("id").toString());
+            list.add(event);
             Log.d(TAG, "onCreateView: " + m.get("time"));
             Log.d(TAG, "onCreateView: " + m.get("title"));
             Log.d(TAG, "onCreateView: " + m.get("content"));

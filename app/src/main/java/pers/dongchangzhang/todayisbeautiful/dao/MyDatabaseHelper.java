@@ -40,7 +40,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(PLANINFORMATION);
             db.execSQL(EVENT);
 
-            Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Database created", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(mContext, "Error", Toast.LENGTH_LONG).show();
         }

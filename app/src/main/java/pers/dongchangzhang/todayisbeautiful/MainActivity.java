@@ -2,13 +2,19 @@ package pers.dongchangzhang.todayisbeautiful;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pers.dongchangzhang.todayisbeautiful.dao.AssetsDatabaseManager;
+import pers.dongchangzhang.todayisbeautiful.entity.Event;
 import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 
+import static pers.dongchangzhang.todayisbeautiful.Config.FALSE;
+import static pers.dongchangzhang.todayisbeautiful.Config.TRUE;
+import static pers.dongchangzhang.todayisbeautiful.Config.first_time_in;
+import static pers.dongchangzhang.todayisbeautiful.Config.weather_information;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Receiver.Message  {
     private static final String TAG = "DB";
     private CityPage cityPage;
     private PlanPage planPage;
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     // slide menu
     private DrawerLayout drawer_layout;
 
+    Receiver myReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
         AssetsDatabaseManager.initManager(getApplication());
 
+        Intent service_intent = new Intent(this, MainService.class);
+        startService(service_intent);
+
+        myReceiver = new Receiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("pers.dongchangzhang.broadcasereceiver.MYRECEIVER");
+        registerReceiver(myReceiver, intentFilter);
+
+        myReceiver.setMessage(this);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.weather_menu, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem.OnActionExpandListener expandListener = new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
@@ -93,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.share:
+                sendSMS(weather_information);
                 break;
             case R.id.confirm:
                 saveDataIntoPreferences("default_city", which_city);
@@ -144,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 fTransaction = fManager.beginTransaction();
 
                 TextView place = (TextView) findViewById(R.id.titles);
+                SwipeRefreshLayout swipFresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+                swipFresh.setRefreshing(false);
                 switch (item.getItemId()) {
                     case R.id.nav_weather:
                         hideAllFragment(fTransaction);
@@ -201,11 +226,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         drawer_layout.closeDrawers();
                         break;
-                    case R.id.nav_share:
-                        sendSMS("hello");
-                        navView.setCheckedItem(R.id.nav_weather);
-                        drawer_layout.closeDrawers();
-                        break;
 
                 }
                 fTransaction.commit();
@@ -251,12 +271,17 @@ public class MainActivity extends AppCompatActivity {
         place.setText("新的计划");
         fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
-        if (newPlanPage == null) {
-            newPlanPage = new NewPlanPage();
-            fTransaction.add(R.id.ly_content, newPlanPage);
-        } else {
-            fTransaction.show(newPlanPage);
+
+        if (newPlanPage != null) {
+           fTransaction.remove(newPlanPage);
         }
+
+        newPlanPage = new NewPlanPage();
+        Bundle bundle = new Bundle();
+        bundle.putString("isEdit", FALSE);
+        newPlanPage.setArguments(bundle);
+        fTransaction.add(R.id.ly_content, newPlanPage);
+
         fTransaction.commit();
     }
 
@@ -302,15 +327,39 @@ public class MainActivity extends AppCompatActivity {
     private void sendSMS(String smsBody)
 
     {
-
         Uri smsToUri = Uri.parse("smsto:");
-
         Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
-
         intent.putExtra("sms_body", smsBody);
-
         startActivity(intent);
 
     }
+    public void editPlan(String id) {
+        TextView place = (TextView) findViewById(R.id.titles);
+        place.setText("编辑计划");
+        fTransaction = fManager.beginTransaction();
 
+        hideAllFragment(fTransaction);
+        if (newPlanPage != null) {
+            fTransaction.remove(newPlanPage);
+        }
+        newPlanPage = new NewPlanPage();
+        Bundle bundle = new Bundle();
+        bundle.putString("isEdit", TRUE);
+        bundle.putString("id", id);
+        newPlanPage.setArguments(bundle);
+
+        fTransaction.add(R.id.ly_content, newPlanPage);
+        fTransaction.commit();
+    }
+
+    @Override
+    public void getMsg(String str) {
+        Log.e(TAG, "getMsg: EEEEEE----------------------" );
+        if (first_time_in) {
+            first_time_in = false;
+        } else {
+            Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+            weatherPage.onRefresh(which_city);
+        }
+    }
 }

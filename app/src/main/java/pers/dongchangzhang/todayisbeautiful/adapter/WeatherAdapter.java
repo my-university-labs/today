@@ -28,6 +28,8 @@ import pers.dongchangzhang.todayisbeautiful.todayisbeautiful.R;
 import pers.dongchangzhang.todayisbeautiful.utils.Tools;
 
 import static android.content.ContentValues.TAG;
+import static pers.dongchangzhang.todayisbeautiful.Config.weather_information;
+import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_image;
 
 public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -112,7 +114,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Glide
                     .with(context)
                     .load(which_image)
-                    .centerCrop()
                     .thumbnail(0.1f).into(target);
             ((Item3ViewHolder) holder).more.setText(formatTodayMoreInfo(weatherEntity));
         }

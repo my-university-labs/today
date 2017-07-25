@@ -59,6 +59,29 @@ public class MyDatabaseOperator {
         return null;
     }
 
+    public List<Map> searchOneEvent(String id) {
+        cursor = db.rawQuery("select * from Events where id=" + id, null);
+        if (cursor != null) {
+            Map<String, String> item;
+            List<Map> result = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                String[] columnNames = cursor.getColumnNames();
+                item = new HashMap<>();
+                for (String colnmnName : columnNames) {
+                    int columnIndex = cursor.getColumnIndex(colnmnName);
+                    String columnValue = cursor.getString(columnIndex);
+                    item.put(colnmnName, columnValue);
+                }
+                result.add(item);
+            }
+            Log.d(TAG, "search: " + result.toString());
+            cursor.close();
+            return result;
+        }
+        cursor.close();
+        return null;
+    }
+
     public long insert(String tableName, ContentValues values) {
         return db.insert(tableName, null, values);
     }

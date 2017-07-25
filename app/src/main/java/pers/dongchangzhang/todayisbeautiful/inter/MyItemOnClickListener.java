@@ -8,4 +8,5 @@ import android.view.View;
 
 public interface MyItemOnClickListener {
     public void onItemOnClick(View view, int postion);
+    public boolean onItemOnLongClick(View view, int postion);
 }
