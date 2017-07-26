@@ -34,7 +34,6 @@ public class MainService extends Service {
             for (PendingIntent pi : bags) {
                 manager.cancel(pi);
             }
-            code = 1;
             addAlarm(manager);
         }
     }
@@ -52,7 +51,7 @@ public class MainService extends Service {
         in.putExtra("type", "not_alarm");
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, in, 0);
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),20*60*1000, pi);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 20*60*1000, pi);
         addAlarm(manager);
         return super.onStartCommand(intent, flags, startId);
     }

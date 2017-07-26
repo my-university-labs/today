@@ -86,11 +86,11 @@ public class GetHttpInfo {
                 LifeInfoFromJson lijson = gson.fromJson(jsonData, LifeInfoFromJson.class);
                 Log.d(TAG, "run: " + lijson);
 
-                try {
-                    which_image = get(IMAGE_API);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    which_image = get(IMAGE_API);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
                 // today
                 TodayWeather tw = new TodayWeather(twjson, fwjson);
@@ -106,6 +106,7 @@ public class GetHttpInfo {
                 // life
                 infos.add(new MoreWeatherInfo(new TodayWeather(twjson, fwjson), new LifeInfo(lijson)));
 
+                Log.d(TAG, "------------------------------------: " + code);
                 Message msg = new Message();
                 msg.what = code;
                 msg.obj = infos;

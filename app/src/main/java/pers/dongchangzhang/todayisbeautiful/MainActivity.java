@@ -41,6 +41,7 @@ import static pers.dongchangzhang.todayisbeautiful.Config.weather_information;
 import static pers.dongchangzhang.todayisbeautiful.Config.which_city;
 
 public class MainActivity extends AppCompatActivity implements Receiver.Message  {
+    private static int notify_id = 0;
     private static final String TAG = "DB";
     private CityPage cityPage;
     private PlanPage planPage;
@@ -382,8 +383,7 @@ public class MainActivity extends AppCompatActivity implements Receiver.Message 
                 .setSmallIcon(R.drawable.notify);
         builder.setDefaults(Notification.DEFAULT_SOUND);
         Notification notification = builder.build();
-        builder.setAutoCancel(true);
-        notiManager.notify(1003, notification);
+        notiManager.notify(notify_id++, notification);
 
     }
     private void removeTmpCityPage(FragmentTransaction fTransaction) {

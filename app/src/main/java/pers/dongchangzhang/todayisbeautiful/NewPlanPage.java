@@ -132,7 +132,6 @@ public class NewPlanPage extends Fragment {
                     }
 
                 } else if (isEdit == TRUE) {
-                    Toast.makeText(getActivity(), "edit", Toast.LENGTH_SHORT).show();
                     MyDatabaseOperator operator = new MyDatabaseOperator((MainActivity) getActivity(), DB_NAME, DB_VERSION);
                     ContentValues value = new ContentValues();
                     value.put("title", plan_title.getText().toString());

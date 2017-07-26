@@ -113,7 +113,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             Glide
                     .with(context)
-                    .load(which_image)
+                    .load(R.drawable.bg)
                     .error(R.drawable.bg)
                     .placeholder(R.drawable.bg)
                     .thumbnail(0.1f).into(target);
